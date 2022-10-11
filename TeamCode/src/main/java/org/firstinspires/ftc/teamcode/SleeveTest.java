@@ -9,7 +9,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name = "SleeveTest", group = "Auto")
+@Autonomous(name = "AA-SleeveTest", group = "Auto")
 public class SleeveTest extends LinearOpMode {
   OpenCvCamera camera;
 
@@ -22,25 +22,34 @@ public class SleeveTest extends LinearOpMode {
     SleeveDetector sleeveDetector = new SleeveDetector(telemetry);
 
     camera.setPipeline(sleeveDetector);
-    camera.openCameraDeviceAsync(
-      () -> camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-    );
+    camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+      @Override
+      public void onOpened() {
+        camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+      }
+
+      @Override
+      public void onError(int errorCode) {}
+    });
+
 
     waitForStart();
 
-    switch (sleeveDetector.getSide()) {
-      case NONE:
-        // ...
-        break;
-      case FIRST:
-        // ...
-        break;
-      case SECOND:
-        // ...
-        break;
-      case THIRD:
-        // ...
-        break;
+    while (!isStopRequested()) {
+      switch (sleeveDetector.getSide()) {
+        case NONE:
+        case FIRST: {
+
+        }
+        case SECOND: {
+
+        }
+        case THIRD: {
+
+        }
+      }
     }
+
+    camera.stopStreaming();
   }
 }
