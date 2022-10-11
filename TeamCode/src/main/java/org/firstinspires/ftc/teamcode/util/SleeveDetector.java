@@ -20,19 +20,19 @@ public class SleeveDetector extends OpenCvPipeline {
   }
   Side side;
 
-  static final float COLOR_RANGE = 10;
+  static final float COLOR_RANGE = 20;
 
   static final Scalar HSV_HIGH_1 = new Scalar(0 + COLOR_RANGE / 2, 255, 255);
   static final Scalar HSV_LOW_1 = new Scalar(0 - COLOR_RANGE / 2, 50, 50);
   static final Scalar HSV_HIGH_2 = new Scalar(60 + COLOR_RANGE / 2, 255, 255);
-  static final Scalar HSV_LOW_2 = new Scalar(60 - COLOR_RANGE / 2, 80, 80);
+  static final Scalar HSV_LOW_2 = new Scalar(60 - COLOR_RANGE / 2, 50, 50);
   static final Scalar HSV_HIGH_3 = new Scalar(120 + COLOR_RANGE / 2, 255, 255);
-  static final Scalar HSV_LOW_3 = new Scalar(120 - COLOR_RANGE / 2, 80, 80);
+  static final Scalar HSV_LOW_3 = new Scalar(120 - COLOR_RANGE / 2, 50, 50);
 
-  static final Scalar COLOR_1 = new Scalar(0, 255, 255); // HSV
-  static final Scalar COLOR_2 = new Scalar(60, 255, 255); // HSV
-  static final Scalar COLOR_3 = new Scalar(120, 255, 255); // HSV
-  static final Scalar COLOR_NONE = new Scalar(255, 255, 255); // RGB
+  static final Scalar COLOR_1 = new Scalar(0, 255, 255);
+  static final Scalar COLOR_2 = new Scalar(60, 255, 255);
+  static final Scalar COLOR_3 = new Scalar(120, 255, 255);
+  static final Scalar COLOR_NONE = new Scalar(0, 0, 255);
 
   static final Rect ROI = new Rect(
     new Point(60, 35),
@@ -54,10 +54,13 @@ public class SleeveDetector extends OpenCvPipeline {
 
     // convert from RGB to HSV because HSV is easier to read
     Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
+    Imgproc.cvtColor(input, mat1, Imgproc.COLOR_RGB2HSV);
+    Imgproc.cvtColor(input, mat2, Imgproc.COLOR_RGB2HSV);
+    Imgproc.cvtColor(input, mat3, Imgproc.COLOR_RGB2HSV);
     // convert all target colors to white and the rest to black
-    Core.inRange(mat, HSV_LOW_1, HSV_HIGH_1, mat1);
-    Core.inRange(mat, HSV_LOW_2, HSV_HIGH_2, mat2);
-    Core.inRange(mat, HSV_LOW_3, HSV_HIGH_3, mat3);
+    Core.inRange(mat1, HSV_LOW_1, HSV_HIGH_1, mat1);
+    Core.inRange(mat2, HSV_LOW_2, HSV_HIGH_2, mat2);
+    Core.inRange(mat3, HSV_LOW_3, HSV_HIGH_3, mat3);
 
     // "cut out" the region of interest (ROI)
     Mat region1 = mat1.submat(ROI);
@@ -84,26 +87,33 @@ public class SleeveDetector extends OpenCvPipeline {
     if (coverage1 > COVERAGE_THRESHOLD) {
       side = Side.FIRST;
 
-      Imgproc.cvtColor(mat1, mat, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat, ROI, COLOR_1);
+      Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
+
+      return mat;
     } else if (coverage2 > COVERAGE_THRESHOLD) {
       side = Side.FIRST;
 
-      Imgproc.cvtColor(mat2, mat, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat, ROI, COLOR_2);
+      Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
+
+      return mat;
     } else if (coverage3 > COVERAGE_THRESHOLD) {
       side = Side.FIRST;
 
-      Imgproc.cvtColor(mat3, mat, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat, ROI, COLOR_3);
+      Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
+
+      return mat;
     } else {
       side = Side.NONE;
 
-      Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
       Imgproc.rectangle(mat, ROI, COLOR_NONE);
+      Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
+
+      return mat;
     }
 
-    return mat;
   }
 
   public Side getSide() {
