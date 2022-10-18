@@ -49,7 +49,7 @@ public class SleeveDetector extends OpenCvPipeline {
     new Point(ROI_X + ROI_WIDTH / 2, ROI_Y + ROI_HEIGHT / 2)
   );
   double ROI_AREA = ROI.area();
-  static final double COVERAGE_THRESHOLD = 0.50;
+  static final double COVERAGE_THRESHOLD = 0.60;
 
   public SleeveDetector(Telemetry telemetry) {
     this.telemetry = telemetry;
@@ -88,9 +88,6 @@ public class SleeveDetector extends OpenCvPipeline {
     telemetry.addData("coverage3", Math.round(coverage3 * 100) + '%');
     telemetry.update();
 
-    mat1.release();
-    mat2.release();
-    mat3.release();
     region1.release();
     region2.release();
     region3.release();
