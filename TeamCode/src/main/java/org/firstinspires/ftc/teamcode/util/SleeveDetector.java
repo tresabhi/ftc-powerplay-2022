@@ -88,7 +88,6 @@ public class SleeveDetector extends OpenCvPipeline {
     telemetry.addData("coverage3", Math.round(coverage3 * 100) + '%');
     telemetry.update();
 
-    mat.release();
     mat1.release();
     mat2.release();
     mat3.release();
