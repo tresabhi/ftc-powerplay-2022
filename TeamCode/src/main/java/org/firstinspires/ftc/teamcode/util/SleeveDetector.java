@@ -101,23 +101,43 @@ public class SleeveDetector extends OpenCvPipeline {
 
     if (coverage1 > COVERAGE_THRESHOLD) {
       side = Side.FIRST;
+      
       Imgproc.cvtColor(mat1, mat1, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat1, ROI, COLOR_1);
+      mat.release();
+      mat2.release();
+      mat3.release();
+
       return mat1;
     } else if (coverage2 > COVERAGE_THRESHOLD) {
       side = Side.SECOND;
+
       Imgproc.cvtColor(mat2, mat2, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat2, ROI, COLOR_2);
+      mat.release();
+      mat1.release();
+      mat3.release();
+
       return mat2;
     } else if (coverage3 > COVERAGE_THRESHOLD) {
       side = Side.THIRD;
+
       Imgproc.cvtColor(mat3, mat3, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat3, ROI, COLOR_3);
+      mat.release();
+      mat1.release();
+      mat2.release();
+
       return mat3;
     } else {
       side = Side.NONE;
+
       Imgproc.cvtColor(mat, mat, Imgproc.COLOR_HSV2RGB);
       Imgproc.rectangle(mat, ROI, COLOR_NONE);
+      mat1.release();
+      mat2.release();
+      mat3.release();
+
       return mat;
     }
   }
