@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.util;
 
+import com.acmerobotics.dashboard.config.Config;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -9,6 +10,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+@Config
 public class SleeveDetector extends OpenCvPipeline {
   Telemetry telemetry;
 
@@ -20,36 +22,41 @@ public class SleeveDetector extends OpenCvPipeline {
   }
   Side side;
 
-  static final float COLOR_RANGE = 15;
-  static final float SATURATION_MAX = 255;
-  static final float SATURATION_MIN = 80;
-  static final float VALUE_MAX = 255;
-  static final float VALUE_MIN = 80;
+  public static float ROI_WIDTH = 32;
+  public static float ROI_HEIGHT = 64;
+  public static float ROI_X = 160;
+  public static float ROI_Y = 120;
 
-  static final Scalar HSV_HIGH_1 = new Scalar(5 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
-  static final Scalar HSV_LOW_1 = new Scalar(5 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
-  static final Scalar HSV_HIGH_2 = new Scalar(60 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
-  static final Scalar HSV_LOW_2 = new Scalar(60 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
-  static final Scalar HSV_HIGH_3 = new Scalar(110 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
-  static final Scalar HSV_LOW_3 = new Scalar(110 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
+  public static double COVERAGE_THRESHOLD = 0.60;
+
+  public static float HUE_1 = 5;
+  public static float HUE_2 = 60;
+  public static float HUE_1 = 110;
+  public static float COLOR_RANGE = 15;
+  public static float SATURATION_MAX = 255;
+  public static float SATURATION_MIN = 80;
+  public static float VALUE_MAX = 255;
+  public static float VALUE_MIN = 80;
 
   // in RGB
-  static final Scalar COLOR_1 = new Scalar(255, 0, 0);
-  static final Scalar COLOR_2 = new Scalar(0, 255, 0);
-  static final Scalar COLOR_3 = new Scalar(0, 0, 255);
-  static final Scalar COLOR_NONE = new Scalar(255, 255, 255);
+  public static Scalar COLOR_1 = new Scalar(255, 0, 0);
+  public static Scalar COLOR_2 = new Scalar(0, 255, 0);
+  public static Scalar COLOR_3 = new Scalar(0, 0, 255);
+  public static Scalar COLOR_NONE = new Scalar(255, 255, 255);
 
-  static final float ROI_WIDTH = 32;
-  static final float ROI_HEIGHT = 64;
-  static final float ROI_X = 160;
-  static final float ROI_Y = 120;
+  // in HSV
+  static Scalar HSV_HIGH_1 = new Scalar(HUE_1 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
+  static Scalar HSV_LOW_1 = new Scalar(HUE_1 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
+  static Scalar HSV_HIGH_2 = new Scalar(HUE_2 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
+  static Scalar HSV_LOW_2 = new Scalar(HUE_2 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
+  static Scalar HSV_HIGH_3 = new Scalar(HUE_3 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
+  static Scalar HSV_LOW_3 = new Scalar(HUE_3 - COLOR_RANGE / 2, SATURATION_MIN, VALUE_MIN);
 
-  static final Rect ROI = new Rect(
+  static Rect ROI = new Rect(
     new Point(ROI_X - ROI_WIDTH / 2, ROI_Y - ROI_HEIGHT / 2),
     new Point(ROI_X + ROI_WIDTH / 2, ROI_Y + ROI_HEIGHT / 2)
   );
   double ROI_AREA = ROI.area();
-  static final double COVERAGE_THRESHOLD = 0.60;
 
   public SleeveDetector(Telemetry telemetry) {
     this.telemetry = telemetry;
