@@ -1,20 +1,31 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.util;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.util.SleeveDetector;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@Autonomous(name = "AA-SleeveTest", group = "Auto")
-public class SleeveTest extends LinearOpMode {
-  OpenCvCamera camera;
+import kotlin.jvm.internal.Lambda;
 
-  @Override
-  public void runOpMode() throws InterruptedException {
+public class Auto {
+  HardwareMap hardwareMap;
+  Telemetry telemetry;
+  OpenCvCamera camera;
+  SleeveDetector sleeveDetector;
+
+  public Auto(HardwareMap hardwareMap, Telemetry telemetry) {
+    this.hardwareMap = hardwareMap;
+    this.telemetry = telemetry;
+  }
+
+  public void init() {
+    telemetry.addLine("autonomous API is initializing");
+
+    telemetry.addLine("camera is initializing");
+
     int cameraMonitorViewId = hardwareMap.appContext.getResources()
       .getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
     camera = OpenCvCameraFactory.getInstance()
@@ -32,23 +43,13 @@ public class SleeveTest extends LinearOpMode {
       public void onError(int errorCode) {}
     });
 
-    waitForStart();
+    telemetry.addLine("camera initialized");
 
-    while (!isStopRequested()) {
-      switch (sleeveDetector.getSide()) {
-        case NONE:
-        case FIRST: {
+    telemetry.addLine("autonomous API initialized");
+    telemetry.addLine("PRESS START");
+  }
 
-        }
-        case SECOND: {
-
-        }
-        case THIRD: {
-
-        }
-      }
-    }
-
+  public void stop() {
     camera.stopStreaming();
   }
 }
