@@ -20,6 +20,7 @@ public class Auto {
   public Auto(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
     this.telemetry = telemetry;
+    this.sleeveDetector = new SleeveDetector(telemetry);
   }
 
   public void init() {
@@ -38,7 +39,7 @@ public class Auto {
       OpenCvCameraFactory
         .getInstance()
         .createInternalCamera(
-          OpenCvInternalCamera.CameraDirection.BACK,
+          OpenCvInternalCamera.CameraDirection.FRONT,
           cameraMonitorViewId
         );
     camera.setPipeline(sleeveDetector);
@@ -50,7 +51,9 @@ public class Auto {
         }
 
         @Override
-        public void onError(int errorCode) {}
+        public void onError(int errorCode) {
+          telemetry.addLine("ERROR: pipeline failed #" + errorCode);
+        }
       }
     );
 
