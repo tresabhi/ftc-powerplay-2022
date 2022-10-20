@@ -39,7 +39,7 @@ public class Auto {
       OpenCvCameraFactory
         .getInstance()
         .createInternalCamera(
-          OpenCvInternalCamera.CameraDirection.FRONT,
+          OpenCvInternalCamera.CameraDirection.BACK,
           cameraMonitorViewId
         );
     camera.setPipeline(sleeveDetector);
