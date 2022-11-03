@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.core.Poser;
+import org.opencv.core.Mat;
 
 @TeleOp(group = "drive")
 @Config
@@ -74,6 +75,18 @@ public class DriveControls extends LinearOpMode {
       leftRear.setPower(powerY - powerX + gamepadTurnY);
       rightRear.setPower(-powerY - powerX - gamepadTurnY);
       rightFront.setPower(powerY - powerX - gamepadTurnY);
+
+      if (gamepad1.start) {
+        if (gamepad1.dpad_up){
+          initialRobotAngle = 0;
+        } else if (gamepad1.dpad_right) {
+          initialRobotAngle = Math.PI / 2;
+        } else if (gamepad1.dpad_down) {
+          initialRobotAngle = Math.PI;
+        } else if (gamepad1.dpad_left) {
+          initialRobotAngle = -Math.PI / 2;
+        }
+      }
     }
   }
 }
