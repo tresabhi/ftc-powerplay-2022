@@ -10,7 +10,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 public class Auto {
-
   HardwareMap hardwareMap;
   Telemetry telemetry;
   OpenCvCamera camera;
