@@ -80,11 +80,11 @@ public class DriveControls extends LinearOpMode {
         if (gamepad1.dpad_up){
           initialRobotAngle = 0;
         } else if (gamepad1.dpad_right) {
-          initialRobotAngle = Math.PI / 2;
+          initialRobotAngle = -Math.PI / 2;
         } else if (gamepad1.dpad_down) {
           initialRobotAngle = Math.PI;
         } else if (gamepad1.dpad_left) {
-          initialRobotAngle = -Math.PI / 2;
+          initialRobotAngle = Math.PI / 2;
         }
       }
     }
