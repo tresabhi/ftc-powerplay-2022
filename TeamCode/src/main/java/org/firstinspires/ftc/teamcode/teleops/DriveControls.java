@@ -44,7 +44,7 @@ public class DriveControls extends LinearOpMode {
   public static double ROTATION_DAMPENING = 2;
 
   public static double CLAW_CLOSED = 1;
-  public static double CLAW_OPENED = 0.75;
+  public static double CLAW_OPENED = 0.4;
 
   public static double EXTENDER_POWER = 0.5;
   public static int EXTENDER_MIN = 0;
@@ -82,7 +82,6 @@ public class DriveControls extends LinearOpMode {
     extender.setPower(EXTENDER_POWER);
 
     waitForStart();
-
 
     while (!isStopRequested()) {
       gamepadMoveX = poser.dampen(-gamepad1.left_stick_x, POSITION_DAMPENING, POSITION_SCALE);

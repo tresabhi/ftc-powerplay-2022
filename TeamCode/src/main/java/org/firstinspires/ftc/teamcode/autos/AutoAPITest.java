@@ -16,7 +16,7 @@ public class AutoAPITest extends LinearOpMode {
     auto.readEnvironment();
 
     while (!isStopRequested()) {
-      // ...
+
     }
 
     auto.stop();

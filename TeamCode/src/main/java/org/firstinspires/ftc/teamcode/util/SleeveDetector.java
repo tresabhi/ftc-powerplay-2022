@@ -98,7 +98,7 @@ public class SleeveDetector extends OpenCvPipeline {
 
     if (coverage1 > COVERAGE_THRESHOLD) {
       side = Side.FIRST;
-      
+
       Imgproc.cvtColor(mat1, mat1, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat1, ROI, COLOR_1);
       mat1.copyTo(mat);
