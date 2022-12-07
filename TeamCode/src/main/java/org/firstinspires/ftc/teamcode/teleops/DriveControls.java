@@ -30,8 +30,7 @@ public class DriveControls extends LinearOpMode {
   Gamepad player1;
   Gamepad player2;
 
-  double gamepadMoveX;
-  double gamepadMoveY;
+  // TODO: group these
   double gamepadMove;
   double gamepadAngle;
   double initialRobotAngle;
@@ -45,6 +44,7 @@ public class DriveControls extends LinearOpMode {
   public static double POSITION_DAMPENING = 4;
   public static double ROTATION_SCALE = 0.75;
   public static double ROTATION_DAMPENING = 4;
+  public static double POSITION_REDUCTION = 0.5;
 
   public static double CLAW_CLOSED = 1;
   public static double CLAW_OPENED = 0.4;
@@ -94,11 +94,9 @@ public class DriveControls extends LinearOpMode {
 
     while (!isStopRequested()) {
       // ########## WHEELS ##########
-      gamepadMoveX = poser.dampen(-player1.left_stick_x, POSITION_DAMPENING, POSITION_SCALE);
-      gamepadMoveY = poser.dampen(player1.left_stick_y, POSITION_DAMPENING, POSITION_SCALE);
+      gamepadMove = poser.dampen(Math.hypot(-player1.left_stick_x, player1.left_stick_y), POSITION_DAMPENING, POSITION_SCALE) * (player1.right_bumper ? POSITION_REDUCTION : 1);
+      gamepadAngle = Math.atan2(player1.left_stick_y, -player1.left_stick_x);
       gamepadTurnY = poser.dampen(player1.right_stick_x, ROTATION_DAMPENING, ROTATION_SCALE);
-      gamepadMove = Math.hypot(gamepadMoveX, gamepadMoveY);
-      gamepadAngle = Math.atan2(gamepadMoveY, gamepadMoveX);
       robotAngle = imu.getAngularOrientation(
         AxesReference.INTRINSIC,
         AxesOrder.ZYX,
@@ -139,7 +137,7 @@ public class DriveControls extends LinearOpMode {
       extender.setTargetPosition(-extenderState + extenderOffset);
 
       // ########## CLAW ##########
-      claw.setPosition(player2.right_bumper ? CLAW_OPENED : CLAW_CLOSED);
+      claw.setPosition(player2.left_bumper ? CLAW_OPENED : CLAW_CLOSED);
 
       // ########## GOD MODE ##########
       if (gamepad1.start && gamepad1.back) {
