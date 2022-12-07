@@ -7,13 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.core.Poser;
 
 @TeleOp(group = "drive")
@@ -26,7 +25,11 @@ public class DriveControls extends LinearOpMode {
   DcMotorEx leftFront, leftRear, rightRear, rightFront, extender;
   Servo claw;
 
-  Orientation orientation;
+  boolean isGodModeEnabled = false;
+  boolean godModeAlreadyToggled = false;
+  Gamepad player1;
+  Gamepad player2;
+
   double gamepadMoveX;
   double gamepadMoveY;
   double gamepadMove;
@@ -51,7 +54,7 @@ public class DriveControls extends LinearOpMode {
   public static int EXTENDER_MAX = 3200;
   public static int EXTENDER_GROUND = EXTENDER_MIN;
   public static int EXTENDER_LOW = 1550;
-  public static int EXTENDER_MEDIUM = 2650;
+  public static int EXTENDER_MEDIUM = 2850;
   public static int EXTENDER_HIGH = EXTENDER_MAX; // TODO: implement this
   public static int EXTENDER_SENSITIVITY = 20;
   int extenderOffset;
@@ -59,6 +62,8 @@ public class DriveControls extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
+    player1 = gamepad1;
+    player2 = gamepad2;
     imuParameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
     imu = hardwareMap.get(BNO055IMU.class, "imu");
     leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
@@ -89,9 +94,9 @@ public class DriveControls extends LinearOpMode {
 
     while (!isStopRequested()) {
       // ########## WHEELS ##########
-      gamepadMoveX = poser.dampen(-gamepad1.left_stick_x, POSITION_DAMPENING, POSITION_SCALE);
-      gamepadMoveY = poser.dampen(gamepad1.left_stick_y, POSITION_DAMPENING, POSITION_SCALE);
-      gamepadTurnY = poser.dampen(gamepad1.right_stick_x, ROTATION_DAMPENING, ROTATION_SCALE);
+      gamepadMoveX = poser.dampen(-player1.left_stick_x, POSITION_DAMPENING, POSITION_SCALE);
+      gamepadMoveY = poser.dampen(player1.left_stick_y, POSITION_DAMPENING, POSITION_SCALE);
+      gamepadTurnY = poser.dampen(player1.right_stick_x, ROTATION_DAMPENING, ROTATION_SCALE);
       gamepadMove = Math.hypot(gamepadMoveX, gamepadMoveY);
       gamepadAngle = Math.atan2(gamepadMoveY, gamepadMoveX);
       robotAngle = imu.getAngularOrientation(
@@ -108,39 +113,74 @@ public class DriveControls extends LinearOpMode {
       rightRear.setPower(-powerY - powerX - gamepadTurnY);
       rightFront.setPower(powerY - powerX - gamepadTurnY);
 
-      if (gamepad1.start) {
-        if (gamepad1.dpad_up){
+      if (player1.start) {
+        if (player1.dpad_up){
           initialRobotAngle = 0;
-        } else if (gamepad1.dpad_right) {
+        } else if (player1.dpad_right) {
           initialRobotAngle = -Math.PI / 2;
-        } else if (gamepad1.dpad_down) {
+        } else if (player1.dpad_down) {
           initialRobotAngle = Math.PI;
-        } else if (gamepad1.dpad_left) {
+        } else if (player1.dpad_left) {
           initialRobotAngle = Math.PI / 2;
         }
       }
 
       // ########## EXTENDER ##########
-      if (!gamepad2.start) {
-        if (gamepad2.a) extenderState = EXTENDER_GROUND;
-        if (gamepad2.x) extenderState = EXTENDER_LOW;
-        if (gamepad2.b) extenderState = EXTENDER_MEDIUM;
-        if (gamepad2.y) extenderState = EXTENDER_HIGH;
+      if (!player2.start) {
+        if (player2.a) extenderState = EXTENDER_GROUND;
+        if (player2.x) extenderState = EXTENDER_LOW;
+        if (player2.b) extenderState = EXTENDER_MEDIUM;
+        if (player2.y) extenderState = EXTENDER_HIGH;
       }
 
-      extenderState += EXTENDER_SENSITIVITY * gamepad2.right_trigger;
-      extenderState -= EXTENDER_SENSITIVITY * gamepad2.left_trigger;
+      extenderState += EXTENDER_SENSITIVITY * player2.right_trigger;
+      extenderState -= EXTENDER_SENSITIVITY * player2.left_trigger;
       extenderState = (int) Math.min(EXTENDER_MAX, Math.max(EXTENDER_MIN, extenderState));
       extender.setTargetPosition(-extenderState + extenderOffset);
 
       // ########## CLAW ##########
-      claw.setPosition(gamepad2.right_bumper ? CLAW_OPENED : CLAW_CLOSED);
+      claw.setPosition(player2.right_bumper ? CLAW_OPENED : CLAW_CLOSED);
+
+      // ########## GOD MODE ##########
+      if (gamepad1.start && gamepad1.back) {
+        if (!godModeAlreadyToggled) {
+          if (isGodModeEnabled) {
+            player1 = gamepad1;
+            player2 = gamepad2;
+            isGodModeEnabled = false;
+          } else {
+            player1 = gamepad1;
+            player2 = gamepad1;
+            isGodModeEnabled = true;
+          }
+
+          godModeAlreadyToggled = true;
+        }
+      } else {
+        godModeAlreadyToggled = false;
+      }
+
+      if (gamepad2.start && gamepad2.back) {
+        if (!godModeAlreadyToggled) {
+          if (isGodModeEnabled) {
+            player1 = gamepad1;
+            player2 = gamepad2;
+            isGodModeEnabled = false;
+          } else {
+            player1 = gamepad2;
+            player2 = gamepad2;
+            isGodModeEnabled = true;
+          }
+
+          godModeAlreadyToggled = true;
+        }
+      } else {
+        godModeAlreadyToggled = false;
+      }
 
       // ########## TELEMETRY ##########
-      telemetry.addData("state", extenderState);
-      telemetry.addData("calculated state", -extenderState);
-      telemetry.addData("current pos", extender.getCurrentPosition());
-      telemetry.addData("current target", extender.getTargetPosition());
+      telemetry.addData("God Mode", isGodModeEnabled);
+      telemetry.addData("God Mode Already Toggled", godModeAlreadyToggled);
       telemetry.update();
     }
   }
