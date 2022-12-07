@@ -39,9 +39,9 @@ public class DriveControls extends LinearOpMode {
   double powerY;
 
   public static double POSITION_SCALE = 0.75;
-  public static double POSITION_DAMPENING = 2;
+  public static double POSITION_DAMPENING = 4;
   public static double ROTATION_SCALE = 0.75;
-  public static double ROTATION_DAMPENING = 2;
+  public static double ROTATION_DAMPENING = 4;
 
   public static double CLAW_CLOSED = 1;
   public static double CLAW_OPENED = 0.4;
@@ -49,6 +49,10 @@ public class DriveControls extends LinearOpMode {
   public static double EXTENDER_POWER = 0.5;
   public static int EXTENDER_MIN = 0;
   public static int EXTENDER_MAX = 3200;
+  public static int EXTENDER_GROUND = EXTENDER_MIN;
+  public static int EXTENDER_LOW = 1550;
+  public static int EXTENDER_MEDIUM = 2650;
+  public static int EXTENDER_HIGH = EXTENDER_MAX; // TODO: implement this
   public static int EXTENDER_SENSITIVITY = 20;
   int extenderOffset;
   int extenderState = EXTENDER_MIN;
@@ -84,6 +88,7 @@ public class DriveControls extends LinearOpMode {
     waitForStart();
 
     while (!isStopRequested()) {
+      // ########## WHEELS ##########
       gamepadMoveX = poser.dampen(-gamepad1.left_stick_x, POSITION_DAMPENING, POSITION_SCALE);
       gamepadMoveY = poser.dampen(gamepad1.left_stick_y, POSITION_DAMPENING, POSITION_SCALE);
       gamepadTurnY = poser.dampen(gamepad1.right_stick_x, ROTATION_DAMPENING, ROTATION_SCALE);
@@ -115,19 +120,23 @@ public class DriveControls extends LinearOpMode {
         }
       }
 
-      claw.setPosition(gamepad2.right_bumper ? CLAW_OPENED : CLAW_CLOSED);
+      // ########## EXTENDER ##########
+      if (!gamepad2.start) {
+        if (gamepad2.a) extenderState = EXTENDER_GROUND;
+        if (gamepad2.x) extenderState = EXTENDER_LOW;
+        if (gamepad2.b) extenderState = EXTENDER_MEDIUM;
+        if (gamepad2.y) extenderState = EXTENDER_HIGH;
+      }
 
-      extenderState = (int) Math.min(
-        EXTENDER_MAX,
-        Math.max(
-          EXTENDER_MIN,
-          extenderState
-            + EXTENDER_SENSITIVITY * gamepad2.right_trigger
-            - EXTENDER_SENSITIVITY * gamepad2.left_trigger
-        )
-      );
+      extenderState += EXTENDER_SENSITIVITY * gamepad2.right_trigger;
+      extenderState -= EXTENDER_SENSITIVITY * gamepad2.left_trigger;
+      extenderState = (int) Math.min(EXTENDER_MAX, Math.max(EXTENDER_MIN, extenderState));
       extender.setTargetPosition(-extenderState + extenderOffset);
 
+      // ########## CLAW ##########
+      claw.setPosition(gamepad2.right_bumper ? CLAW_OPENED : CLAW_CLOSED);
+
+      // ########## TELEMETRY ##########
       telemetry.addData("state", extenderState);
       telemetry.addData("calculated state", -extenderState);
       telemetry.addData("current pos", extender.getCurrentPosition());
