@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.util;
+package org.firstinspires.ftc.teamcode.core;
 
 import com.acmerobotics.dashboard.config.Config;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -24,10 +24,8 @@ public class SleeveDetector extends OpenCvPipeline {
 
   public static double ROI_WIDTH = 32;
   public static double ROI_HEIGHT = 64;
-  public static double ROI_X = 160;
+  public static double ROI_X = 152;
   public static double ROI_Y = 120;
-
-  public static double COVERAGE_THRESHOLD = 0.50;
 
   public static double COLOR_RANGE = 10;
   public static double HUE_1 = 180;
@@ -43,6 +41,7 @@ public class SleeveDetector extends OpenCvPipeline {
   static Scalar COLOR_2 = new Scalar(0, 255, 0);
   static Scalar COLOR_3 = new Scalar(0, 0, 255);
   static Scalar COLOR_NONE = new Scalar(255, 255, 255);
+  double max;
 
   // in HSV
   static Scalar HSV_HIGH_1 = new Scalar(HUE_1 + COLOR_RANGE / 2, SATURATION_MAX, VALUE_MAX);
@@ -96,19 +95,21 @@ public class SleeveDetector extends OpenCvPipeline {
     telemetry.addData("coverage3", Math.round(coverage3 * 100) + '%');
     telemetry.update();
 
-    if (coverage1 > COVERAGE_THRESHOLD) {
+    max = Math.max(coverage1, Math.max(coverage2, coverage3));
+
+    if (coverage1 == max) {
       side = Side.FIRST;
 
       Imgproc.cvtColor(mat1, mat1, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat1, ROI, COLOR_1);
       mat1.copyTo(mat);
-    } else if (coverage2 > COVERAGE_THRESHOLD) {
+    } else if (coverage2 == max) {
       side = Side.SECOND;
 
       Imgproc.cvtColor(mat2, mat2, Imgproc.COLOR_GRAY2RGB);
       Imgproc.rectangle(mat2, ROI, COLOR_2);
       mat2.copyTo(mat);
-    } else if (coverage3 > COVERAGE_THRESHOLD) {
+    } else if (coverage3 == max) {
       side = Side.THIRD;
 
       Imgproc.cvtColor(mat3, mat3, Imgproc.COLOR_GRAY2RGB);

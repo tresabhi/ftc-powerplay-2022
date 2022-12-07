@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import kotlin.jvm.internal.Lambda;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.util.SleeveDetector;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -46,7 +45,7 @@ public class Auto {
       new OpenCvCamera.AsyncCameraOpenListener() {
         @Override
         public void onOpened() {
-          camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+          camera.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
         }
 
         @Override
