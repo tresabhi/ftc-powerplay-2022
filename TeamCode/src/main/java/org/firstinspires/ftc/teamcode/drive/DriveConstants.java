@@ -97,10 +97,10 @@ public class DriveConstants {
      * Max Recommended Angular Velocity (deg): 13.190761853452106
      * Max Recommended Angular Velocity (rad): 0.23022222518920898
      */
-    public static double MAX_VEL = 45;
-    public static double MAX_ACCEL = 52.48291908330528;
-    public static double MAX_ANG_VEL = Math.toRadians(175);
-    public static double MAX_ANG_ACCEL = Math.toRadians(222.7444266666667);
+    public static double MAX_VEL = 30;
+    public static double MAX_ACCEL = 30;
+    public static double MAX_ANG_VEL = Math.toRadians(125);
+    public static double MAX_ANG_ACCEL = Math.toRadians(150);
 
 
     public static double encoderTicksToInches(double ticks) {
