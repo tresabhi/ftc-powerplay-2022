@@ -1,22 +1,17 @@
 package org.firstinspires.ftc.teamcode.autos;
 
-import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
-import org.firstinspires.ftc.teamcode.core.Poser;
 import org.firstinspires.ftc.teamcode.core.SleeveDetector;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.teamcode.trajectorysequence.sequencesegment.TrajectorySegment;
 
-@Autonomous(name = "[AA]RRTest", group = "Auto")
-public class RRTest extends LinearOpMode {
+@Autonomous(name = "AutoLeft", group = "Auto")
+public class AutoLeft extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -63,11 +58,11 @@ public class RRTest extends LinearOpMode {
       .build();
 
     TrajectorySequence t8Second = mecanumDrive.trajectorySequenceBuilder(t7.end())
-      .forward(2)
+      .forward(5)
       .build();
 
     TrajectorySequence t8Third = mecanumDrive.trajectorySequenceBuilder(t7.end())
-      .back(30)
+      .back(18)
       .build();
 
     drive.setClawState(Drive.ClawState.CLOSE);
