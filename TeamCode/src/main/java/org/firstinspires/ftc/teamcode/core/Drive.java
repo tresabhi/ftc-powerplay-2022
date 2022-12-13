@@ -12,7 +12,8 @@ public class Drive {
     HIGH,
     MEDIUM,
     LOW,
-    GROUND
+    GROUND,
+    ABOVE_GROUND
   }
 
   public enum ClawState {
@@ -29,11 +30,12 @@ public class Drive {
   public static double EXTENDER_POWER = 0.5;
   public static int EXTENDER_MIN = 0;
   public static int EXTENDER_MAX = 3200;
-  public static int EXTENDER_GROUND = EXTENDER_MIN;
+  public static int EXTENDER_GROUND = 0;
+  public static int EXTENDER_ABOVE_GROUND = 250;
   public static int EXTENDER_LOW = 1550;
   public static int EXTENDER_MEDIUM = 2850;
   public static int EXTENDER_HIGH = EXTENDER_MAX;
-  public double extenderOffset;
+  double extenderOffset;
   public double extenderState = EXTENDER_MIN;
 
   public static double CLAW_CLOSED = 1;
@@ -78,6 +80,8 @@ public class Drive {
       setExtenderPosition(EXTENDER_LOW);
     } else if (level == ExtenderLevel.GROUND) {
       setExtenderPosition(EXTENDER_GROUND);
+    } else if (level == ExtenderLevel.ABOVE_GROUND) {
+      setExtenderPosition(EXTENDER_ABOVE_GROUND);
     }
   }
 

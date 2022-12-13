@@ -13,7 +13,7 @@ public class Auto {
   Telemetry telemetry;
   OpenCvCamera camera;
   SleeveDetector sleeveDetector;
-  SleeveDetector.Side side;
+  public SleeveDetector.Side side;
 
   public Auto(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
