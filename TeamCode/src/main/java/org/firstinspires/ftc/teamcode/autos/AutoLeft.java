@@ -112,21 +112,26 @@ public class AutoLeft extends LinearOpMode {
 
     mecanumDrive.followTrajectorySequence(t7);
     drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(250);
+    sleep(500);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
 
-    if (auto.side == SleeveDetector.Side.FIRST) {
-      mecanumDrive.followTrajectorySequence(t8First);
-    } else if (auto.side == SleeveDetector.Side.SECOND) {
-      mecanumDrive.followTrajectorySequence(t8Second);
-    } else if (auto.side == SleeveDetector.Side.THIRD) {
-      mecanumDrive.followTrajectorySequence(t8Third);
+    switch (auto.side) {
+      case NONE:
+      case FIRST:
+        mecanumDrive.followTrajectorySequence(t8First);
+        break;
+      case SECOND:
+        mecanumDrive.followTrajectorySequence(t8Second);
+        break;
+      case THIRD:
+        mecanumDrive.followTrajectorySequence(t8Third);
+        break;
     }
 
     drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
-
     sleep(2000);
+
     auto.stop();
   }
 }
