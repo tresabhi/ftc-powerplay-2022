@@ -25,14 +25,14 @@ public class AutoRight extends LinearOpMode {
       .build();
 
     TrajectorySequence t2 = mecanumDrive.trajectorySequenceBuilder(t1.end())
-      .forward(35)
+      .forward(36)
       .turn(Math.toRadians(-90))
       .forward(2.5)
       .build();
 
     TrajectorySequence t3 = mecanumDrive.trajectorySequenceBuilder(t2.end())
       .back(1)
-      .strafeLeft(13)
+      .strafeLeft(12)
       .build();
 
     TrajectorySequence t4 = mecanumDrive.trajectorySequenceBuilder(t3.end())
@@ -41,7 +41,7 @@ public class AutoRight extends LinearOpMode {
 
     TrajectorySequence t5 = mecanumDrive.trajectorySequenceBuilder(t4.end())
       .back(46)
-      .strafeRight(13)
+      .strafeRight(12)
       .forward(2)
       .build();
 
@@ -50,7 +50,7 @@ public class AutoRight extends LinearOpMode {
       .build();
 
     TrajectorySequence t7 = mecanumDrive.trajectorySequenceBuilder(t6.end())
-      .strafeRight(12)
+      .strafeRight(13)
       .forward(16)
       .build();
 
