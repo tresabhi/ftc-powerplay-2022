@@ -21,13 +21,13 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t1 = mecanumDrive.trajectorySequenceBuilder(new Pose2d())
       .forward(1)
-      .strafeRight(21)
+      .strafeRight(20.5)
       .build();
 
     TrajectorySequence t2 = mecanumDrive.trajectorySequenceBuilder(t1.end())
       .forward(40)
       .turn(Math.toRadians(90))
-      .forward(2.5)
+      .forward(3)
       .build();
 
     TrajectorySequence t3 = mecanumDrive.trajectorySequenceBuilder(t2.end())
@@ -40,7 +40,7 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t5 = mecanumDrive.trajectorySequenceBuilder(t4.end())
       .back(51)
-      .strafeLeft(13.5)
+      .strafeLeft(12.5)
       .forward(4)
       .build();
 
@@ -65,13 +65,14 @@ public class AutoLeft extends LinearOpMode {
       .back(18)
       .build();
 
-    drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(1000);
-    drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
-
     auto.init();
     waitForStart();
     auto.readEnvironment();
+
+    drive.setClawState(Drive.ClawState.CLOSE);
+    sleep(1250);
+    drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
+    sleep(500);
 
     mecanumDrive.followTrajectorySequence(t1);
     drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
@@ -111,10 +112,10 @@ public class AutoLeft extends LinearOpMode {
     sleep(250);
 
     mecanumDrive.followTrajectorySequence(t7);
-    drive.setClawState(Drive.ClawState.CLOSE);
+//    drive.setClawState(Drive.ClawState.CLOSE);
     sleep(500);
 
-    drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
+    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
 
     switch (auto.side) {
       case NONE:
@@ -129,7 +130,7 @@ public class AutoLeft extends LinearOpMode {
         break;
     }
 
-    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
+//    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
     sleep(2000);
 
     auto.stop();
