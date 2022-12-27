@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -18,6 +17,7 @@ import org.firstinspires.ftc.teamcode.core.Poser;
 @TeleOp(group = "drive")
 @Config
 public class DriveControls extends LinearOpMode {
+
   Poser poser = new Poser();
   Drive drive;
 
@@ -31,15 +31,14 @@ public class DriveControls extends LinearOpMode {
   Gamepad player1;
   Gamepad player2;
 
-  // TODO: group these
-  double gamepadMove, gamepadAngle, initialRobotAngle, robotAngle, gamepadTurnY, movementAngle  ;
-  double powerX, powerY;
+  double initialRobotAngle;
 
-  public static double POSITION_SCALE = 0.75;
-  public static double POSITION_DAMPENING = 4;
-  public static double ROTATION_SCALE = 0.75;
+  public static double SPEED_NORMAL = 0.85;
+  public static double SPEED_LOW = 0.75;
+  public static double SPEED_DAMP = 4;
+  public static double ROTATION_NORMAL = 0.75;
+  public static double ROTATION_SLOW = 0.75;
   public static double ROTATION_DAMPENING = 4;
-  public static double POSITION_REDUCTION = 0.5;
 
   public static int EXTENDER_SENSITIVITY = 20;
 
@@ -70,17 +69,44 @@ public class DriveControls extends LinearOpMode {
 
     while (!isStopRequested()) {
       // ########## WHEELS ##########
-      gamepadMove = poser.dampen(Math.hypot(-player1.left_stick_x, player1.left_stick_y), POSITION_DAMPENING, POSITION_SCALE) * (player1.right_bumper ? POSITION_REDUCTION : 1);
-      gamepadAngle = Math.atan2(player1.left_stick_y, -player1.left_stick_x);
-      gamepadTurnY = poser.dampen(player1.right_stick_x, ROTATION_DAMPENING, ROTATION_SCALE);
-      robotAngle = imu.getAngularOrientation(
+      double gamepadMove =
+        poser.dampen(
+          Math.hypot(-player1.left_stick_x, player1.left_stick_y),
+          SPEED_DAMP,
+          player1.right_bumper ? SPEED_LOW : SPEED_NORMAL
+        );
+      double squareMagnitude =
+        1 /
+        (
+          Math.cos(
+            (
+              (
+                Math.atan2(Math.abs(player1.left_stick_y), player1.left_stick_x) +
+                (Math.PI / 4)
+              ) %
+              (Math.PI / 2)
+            ) -
+            (Math.PI / 4)
+          )
+        );
+      double gamepadAngle = Math.atan2(
+        player1.left_stick_y,
+        -player1.left_stick_x
+      );
+      double gamepadTurnY = poser.dampen(
+        player1.right_stick_x,
+        ROTATION_DAMPENING,
+        player1.right_bumper ? ROTATION_SLOW : ROTATION_NORMAL
+      );
+      double robotAngle = imu.getAngularOrientation(
         AxesReference.INTRINSIC,
         AxesOrder.ZYX,
         AngleUnit.RADIANS
-      ).firstAngle;
-      movementAngle = -robotAngle - initialRobotAngle + gamepadAngle;
-      powerX = gamepadMove * Math.sin(movementAngle);
-      powerY = gamepadMove * Math.cos(movementAngle);
+      )
+        .firstAngle;
+      double movementAngle = -robotAngle - initialRobotAngle + gamepadAngle;
+      double powerX = gamepadMove * Math.sin(movementAngle) / squareMagnitude;
+      double powerY = gamepadMove * Math.cos(movementAngle) / squareMagnitude;
 
       leftFront.setPower(-powerY - powerX + gamepadTurnY);
       leftRear.setPower(powerY - powerX + gamepadTurnY);
@@ -88,7 +114,7 @@ public class DriveControls extends LinearOpMode {
       rightFront.setPower(powerY - powerX - gamepadTurnY);
 
       if (player1.start) {
-        if (player1.dpad_up){
+        if (player1.dpad_up) {
           initialRobotAngle = 0;
         } else if (player1.dpad_right) {
           initialRobotAngle = -Math.PI / 2;
@@ -111,7 +137,9 @@ public class DriveControls extends LinearOpMode {
       drive.addExtenderPosition(-EXTENDER_SENSITIVITY * player2.left_trigger);
 
       // ########## CLAW ##########
-      drive.setClawState(player2.left_bumper ? Drive.ClawState.OPEN : Drive.ClawState.CLOSE);
+      drive.setClawState(
+        player2.left_bumper ? Drive.ClawState.OPEN : Drive.ClawState.CLOSE
+      );
 
       // ########## GOD MODE ##########
       if (gamepad1.start && gamepad1.back) {
@@ -153,6 +181,8 @@ public class DriveControls extends LinearOpMode {
       // ########## TELEMETRY ##########
       telemetry.addData("God Mode", isGodModeEnabled);
       telemetry.addData("God Mode Already Toggled", godModeAlreadyToggled);
+      telemetry.addData("m", squareMagnitude);
+      telemetry.addData("t", Math.atan2(player1.left_stick_y, player1.left_stick_x) / Math.PI * 180);
       telemetry.update();
     }
   }

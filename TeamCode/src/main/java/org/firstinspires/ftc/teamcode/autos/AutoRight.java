@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 import org.firstinspires.ftc.teamcode.core.SleeveDetector;
@@ -19,50 +18,60 @@ public class AutoRight extends LinearOpMode {
     SampleMecanumDrive mecanumDrive = new SampleMecanumDrive(hardwareMap);
     Drive drive = new Drive(hardwareMap, telemetry);
 
-    TrajectorySequence t1 = mecanumDrive.trajectorySequenceBuilder(new Pose2d())
+    TrajectorySequence t1 = mecanumDrive
+      .trajectorySequenceBuilder(new Pose2d())
       .forward(1)
       .strafeLeft(28)
       .build();
 
-    TrajectorySequence t2 = mecanumDrive.trajectorySequenceBuilder(t1.end())
+    TrajectorySequence t2 = mecanumDrive
+      .trajectorySequenceBuilder(t1.end())
       .forward(36.5)
       .turn(Math.toRadians(-90))
       .forward(2.5)
       .build();
 
-    TrajectorySequence t3 = mecanumDrive.trajectorySequenceBuilder(t2.end())
+    TrajectorySequence t3 = mecanumDrive
+      .trajectorySequenceBuilder(t2.end())
       .back(1.5)
       .strafeLeft(11)
       .build();
 
-    TrajectorySequence t4 = mecanumDrive.trajectorySequenceBuilder(t3.end())
+    TrajectorySequence t4 = mecanumDrive
+      .trajectorySequenceBuilder(t3.end())
       .forward(46.5)
       .build();
 
-    TrajectorySequence t5 = mecanumDrive.trajectorySequenceBuilder(t4.end())
+    TrajectorySequence t5 = mecanumDrive
+      .trajectorySequenceBuilder(t4.end())
       .back(46)
       .strafeRight(1)
       .forward(2)
       .build();
 
-    TrajectorySequence t6 = mecanumDrive.trajectorySequenceBuilder(t5.end())
+    TrajectorySequence t6 = mecanumDrive
+      .trajectorySequenceBuilder(t5.end())
       .back(2)
       .build();
 
-    TrajectorySequence t7 = mecanumDrive.trajectorySequenceBuilder(t6.end())
+    TrajectorySequence t7 = mecanumDrive
+      .trajectorySequenceBuilder(t6.end())
       .strafeRight(13)
       .forward(16)
       .build();
 
-    TrajectorySequence t8First = mecanumDrive.trajectorySequenceBuilder(t7.end())
+    TrajectorySequence t8First = mecanumDrive
+      .trajectorySequenceBuilder(t7.end())
       .back(18)
       .build();
 
-    TrajectorySequence t8Second = mecanumDrive.trajectorySequenceBuilder(t7.end())
+    TrajectorySequence t8Second = mecanumDrive
+      .trajectorySequenceBuilder(t7.end())
       .forward(5)
       .build();
 
-    TrajectorySequence t8Third = mecanumDrive.trajectorySequenceBuilder(t7.end())
+    TrajectorySequence t8Third = mecanumDrive
+      .trajectorySequenceBuilder(t7.end())
       .forward(30)
       .build();
 
@@ -113,7 +122,7 @@ public class AutoRight extends LinearOpMode {
     sleep(250);
 
     mecanumDrive.followTrajectorySequence(t7);
-//    drive.setClawState(Drive.ClawState.CLOSE);
+    //    drive.setClawState(Drive.ClawState.CLOSE);
     sleep(500);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
@@ -131,7 +140,7 @@ public class AutoRight extends LinearOpMode {
         break;
     }
 
-//    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
+    //    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
     sleep(2000);
 
     auto.stop();
