@@ -21,14 +21,14 @@ public class AutoRight extends LinearOpMode {
     TrajectorySequence t1 = mecanumDrive
       .trajectorySequenceBuilder(new Pose2d())
       .forward(1)
-      .strafeLeft(28)
+      .strafeLeft(27.5)
       .build();
 
     TrajectorySequence t2 = mecanumDrive
       .trajectorySequenceBuilder(t1.end())
       .forward(36.5)
       .turn(Math.toRadians(-90))
-      .forward(2.5)
+      .forward(2)
       .build();
 
     TrajectorySequence t3 = mecanumDrive
@@ -45,7 +45,7 @@ public class AutoRight extends LinearOpMode {
     TrajectorySequence t5 = mecanumDrive
       .trajectorySequenceBuilder(t4.end())
       .back(46)
-      .strafeRight(1)
+      .strafeRight(12)
       .forward(2)
       .build();
 
@@ -56,31 +56,26 @@ public class AutoRight extends LinearOpMode {
 
     TrajectorySequence t7 = mecanumDrive
       .trajectorySequenceBuilder(t6.end())
-      .strafeRight(13)
-      .forward(16)
-      .build();
-
-    TrajectorySequence t8First = mecanumDrive
-      .trajectorySequenceBuilder(t7.end())
-      .back(18)
+      .strafeLeft(12)
       .build();
 
     TrajectorySequence t8Second = mecanumDrive
       .trajectorySequenceBuilder(t7.end())
-      .forward(5)
+      .forward(22.5)
       .build();
 
     TrajectorySequence t8Third = mecanumDrive
       .trajectorySequenceBuilder(t7.end())
-      .forward(30)
+      .forward(46)
       .build();
+
+    drive.setClawState(Drive.ClawState.CLOSE);
+    sleep(1250);
 
     auto.init();
     waitForStart();
     auto.readEnvironment();
 
-    drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(1250);
     drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
     sleep(500);
 
@@ -122,16 +117,9 @@ public class AutoRight extends LinearOpMode {
     sleep(250);
 
     mecanumDrive.followTrajectorySequence(t7);
-    //    drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(500);
-
-    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
 
     switch (auto.side) {
       case NONE:
-      case FIRST:
-        mecanumDrive.followTrajectorySequence(t8First);
-        break;
       case SECOND:
         mecanumDrive.followTrajectorySequence(t8Second);
         break;

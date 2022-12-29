@@ -55,7 +55,7 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t7 = mecanumDrive
       .trajectorySequenceBuilder(t6.end())
-      .strafeLeft(11)
+      .strafeLeft(12)
       .forward(16.75)
       .build();
 
