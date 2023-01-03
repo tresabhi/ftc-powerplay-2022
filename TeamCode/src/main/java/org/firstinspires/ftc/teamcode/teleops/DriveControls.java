@@ -36,7 +36,7 @@ public class DriveControls extends LinearOpMode {
   public static double SPEED_NORMAL = 0.85;
   public static double SPEED_LOW = 0.75;
   public static double SPEED_DAMP = 4;
-  public static double ROTATION_NORMAL = 0.75;
+  public static double ROTATION_NORMAL = 0.85;
   public static double ROTATION_SLOW = 0.75;
   public static double ROTATION_DAMPENING = 4;
 
