@@ -29,7 +29,7 @@ public class Drive {
 
   public static double EXTENDER_POWER = 0.5;
   public static int EXTENDER_MIN = 0;
-  public static int EXTENDER_MAX = 3200;
+  public static int EXTENDER_MAX = 4100;
   public static int EXTENDER_GROUND = 0;
   public static int EXTENDER_ABOVE_GROUND = 250;
   public static int EXTENDER_LOW = 1550;
