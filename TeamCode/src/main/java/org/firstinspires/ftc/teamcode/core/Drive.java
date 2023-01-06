@@ -33,7 +33,7 @@ public class Drive {
   public static int EXTENDER_GROUND = 0;
   public static int EXTENDER_ABOVE_GROUND = 250;
   public static int EXTENDER_LOW = 1550;
-  public static int EXTENDER_MEDIUM = 2850;
+  public static int EXTENDER_MEDIUM = 2750;
   public static int EXTENDER_HIGH = EXTENDER_MAX;
   double extenderOffset;
   public double extenderState = EXTENDER_MIN;

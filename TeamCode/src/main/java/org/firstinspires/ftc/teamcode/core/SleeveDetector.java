@@ -24,8 +24,8 @@ public class SleeveDetector extends OpenCvPipeline {
 
   public static double ROI_WIDTH = 48;
   public static double ROI_HEIGHT = 64;
-  public static double ROI_X = 152;
-  public static double ROI_Y = 157;
+  public static double ROI_X = 155;
+  public static double ROI_Y = 127;
 
   public static double COLOR_RANGE = 20;
   public static double HUE_1 = 180;
