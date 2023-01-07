@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
-import org.firstinspires.ftc.teamcode.core.SleeveDetector;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -131,6 +130,6 @@ public class AutoRight extends LinearOpMode {
     //    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
     sleep(2000);
 
-    auto.stop();
+    auto.cleanup();
   }
 }

@@ -156,20 +156,6 @@ public class TrajectorySequenceBuilder {
         return addPath(() -> currentTrajectoryBuilder.lineToLinearHeading(endPose, velConstraint, accelConstraint));
     }
 
-    public TrajectorySequenceBuilder lineToLinearHeadingRelative(Pose2d diff) {
-        Pose2d diffFinal = new Pose2d(diff.getY(), -diff.getX(), -diff.getHeading());
-
-        double magnitude = Math.hypot(diffFinal.getX(), diffFinal.getY());
-        double magnitudeAngle = Math.atan2(diffFinal.getY(), diffFinal.getX()) + lastPose.getHeading();
-        double rotatedX = magnitude * Math.cos(magnitudeAngle);
-        double rotatedY = magnitude * Math.sin(magnitudeAngle);
-
-        Pose2d nextPose = new Pose2d(lastPose.getX(), lastPose.getY(), lastPose.getHeading())
-          .plus(new Pose2d(rotatedX, rotatedY, diffFinal.getHeading()));
-
-        return lineToLinearHeading(nextPose);
-    }
-
     public TrajectorySequenceBuilder lineToSplineHeading(Pose2d endPose) {
         return addPath(() -> currentTrajectoryBuilder.lineToSplineHeading(endPose, currentVelConstraint, currentAccelConstraint));
     }
@@ -721,5 +707,17 @@ public class TrajectorySequenceBuilder {
 
     private interface AddPathCallback {
         void run();
+    }
+
+    // ALL LINES BELOW ARE MODIFICATIONS MADE TO ROAD RUNNER
+    public TrajectorySequenceBuilder lineToLinearHeadingRelative(Pose2d diff) {
+        double magnitude = Math.hypot(diff.getX(), diff.getY());
+        double magnitudeAngle = Math.atan2(diff.getY(), diff.getX()) + lastPose.getHeading();
+        double rotatedX = magnitude * Math.cos(magnitudeAngle);
+        double rotatedY = magnitude * Math.sin(magnitudeAngle);
+
+        Pose2d nextPose = new Pose2d(lastPose.getX() + rotatedY, lastPose.getY() - rotatedX, Angle.norm(lastPose.getHeading() + diff.getHeading()));
+
+        return lineToLinearHeading(nextPose);
     }
 }
