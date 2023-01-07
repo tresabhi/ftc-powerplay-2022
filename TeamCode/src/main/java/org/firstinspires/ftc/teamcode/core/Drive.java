@@ -13,7 +13,9 @@ public class Drive {
     MEDIUM,
     LOW,
     GROUND,
-    ABOVE_GROUND
+    ABOVE_GROUND,
+    STACK_5,
+    STACK_4
   }
 
   public enum ClawState {
@@ -32,10 +34,11 @@ public class Drive {
   public static int EXTENDER_MAX = 4100;
   public static int EXTENDER_GROUND = 0;
   public static int EXTENDER_ABOVE_GROUND = 250;
-  public static int EXTENDER_LOW = 1550;
+  public static int EXTENDER_LOW = 1650;
   public static int EXTENDER_MEDIUM = 2750;
   public static int EXTENDER_HIGH = EXTENDER_MAX;
-  double extenderOffset;
+  public static int EXTENDER_STACK_5 = 600;
+  public static int EXTENDER_STACK_4 = 400;
   public double extenderState = EXTENDER_MIN;
 
   public static double CLAW_CLOSED = 1;
@@ -48,7 +51,6 @@ public class Drive {
     extender = hardwareMap.get(DcMotorEx.class, "extender");
     claw = hardwareMap.get(Servo.class, "claw");
 
-    extenderOffset = extender.getCurrentPosition();
     extender.setTargetPositionTolerance(200);
     extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     updateExtender();
@@ -58,7 +60,7 @@ public class Drive {
 
   public void updateExtender() {
     extenderState = Math.min(EXTENDER_MAX, Math.max(EXTENDER_MIN, extenderState));
-    extender.setTargetPosition((int) (-extenderState + extenderOffset));
+    extender.setTargetPosition((int) (-extenderState));
   }
 
   public void setExtenderPosition(double position) {
@@ -82,6 +84,10 @@ public class Drive {
       setExtenderPosition(EXTENDER_GROUND);
     } else if (level == ExtenderLevel.ABOVE_GROUND) {
       setExtenderPosition(EXTENDER_ABOVE_GROUND);
+    } else if (level == ExtenderLevel.STACK_5) {
+      setExtenderPosition(EXTENDER_STACK_5);
+    } else if (level == ExtenderLevel.STACK_4) {
+      setExtenderPosition(EXTENDER_STACK_4);
     }
   }
 

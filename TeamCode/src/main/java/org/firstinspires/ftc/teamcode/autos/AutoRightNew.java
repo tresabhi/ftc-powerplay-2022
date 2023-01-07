@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "AutoLeft", group = "Auto")
-public class AutoLeft extends LinearOpMode {
+@Autonomous(name = "![NEW]AutoRight", group = "Auto")
+public class AutoRightNew extends LinearOpMode {
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -19,126 +20,119 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t1 = mecanum
       .trajectorySequenceBuilder(new Pose2d())
-      .forward(1)
-      .strafeRight(20.5)
+      .lineToLinearHeadingRelative(new Pose2d(-26.5, 1))
       .build();
 
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
-      .forward(40)
+      .forward(37.25)
       .turn(Math.toRadians(90))
-      .forward(3)
+      .forward(2.5)
       .build();
 
     TrajectorySequence t3 = mecanum
       .trajectorySequenceBuilder(t2.end())
-      .strafeRight(14)
+      .back(3)
+      .lineToLinearHeadingRelative(new Pose2d(11.75, 0, Math.toRadians(180)))
+      .forward(48.5)
       .build();
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
-      .forward(48.5)
+      .back(35.5)
+      .turn(Math.toRadians(-90))
+      .forward(2.25)
       .build();
 
     TrajectorySequence t5 = mecanum
       .trajectorySequenceBuilder(t4.end())
-      .back(51)
-      .strafeLeft(12.5)
-      .forward(4)
+      .back(1.75)
+      .turn(Math.toRadians(90))
+      .lineToLinearHeadingRelative(new Pose2d(0.5, 35))
       .build();
 
     TrajectorySequence t6 = mecanum
       .trajectorySequenceBuilder(t5.end())
-      .back(4)
+      .back(11)
+      .turn(Math.toRadians(-90))
+      .forward(2.5)
       .build();
 
     TrajectorySequence t7 = mecanum
       .trajectorySequenceBuilder(t6.end())
-      .strafeLeft(12)
-      .forward(16.75)
+      .back(2.5)
       .build();
 
-    TrajectorySequence t8First = mecanum
+    TrajectorySequence t8_1 = mecanum
       .trajectorySequenceBuilder(t7.end())
-      .forward(30)
+      .strafeLeft(11)
       .build();
 
-    TrajectorySequence t8Second = mecanum
+    TrajectorySequence t8_2 = mecanum
       .trajectorySequenceBuilder(t7.end())
-      .forward(5)
+      .strafeRight(11)
       .build();
 
-    TrajectorySequence t8Third = mecanum
+    TrajectorySequence t8_3 = mecanum
       .trajectorySequenceBuilder(t7.end())
-      .back(18)
+      .strafeRight(35)
       .build();
+
+    drive.setClawState(Drive.ClawState.CLOSE);
 
     auto.init();
     waitForStart();
     auto.readEnvironment();
 
-    drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(1250);
     drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
-    sleep(500);
 
     mecanum.followTrajectorySequence(t1);
-    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
 
+    drive.setExtenderLevel(Drive.ExtenderLevel.HIGH);
     mecanum.followTrajectorySequence(t2);
-    drive.addExtenderPosition(-750);
+
+    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
     sleep(1000);
 
     drive.setClawState(Drive.ClawState.OPEN);
-    sleep(500);
-
-    drive.addExtenderPosition(750);
-    sleep(1000);
-
+    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
     mecanum.followTrajectorySequence(t3);
-    drive.setExtenderPosition(600);
 
+    drive.setClawState(Drive.ClawState.CLOSE);
+    sleep(250);
+
+    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
     mecanum.followTrajectorySequence(t4);
+
+    drive.setClawState(Drive.ClawState.OPEN);
+    sleep(250);
+
+    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_4);
+    mecanum.followTrajectorySequence(t5);
+
     drive.setClawState(Drive.ClawState.CLOSE);
     sleep(500);
 
-    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
-    sleep(500);
-
-    mecanum.followTrajectorySequence(t5);
-    drive.addExtenderPosition(-750);
-    sleep(500);
+    drive.setExtenderLevel(Drive.ExtenderLevel.LOW);
+    mecanum.followTrajectorySequence(t6);
 
     drive.setClawState(Drive.ClawState.OPEN);
-    sleep(500);
-
-    drive.addExtenderPosition(750);
-    sleep(750);
-
-    mecanum.followTrajectorySequence(t6);
-    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
-    sleep(250);
-
     mecanum.followTrajectorySequence(t7);
-    //    drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(500);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
-
     switch (auto.side) {
       case NONE:
       case FIRST:
-        mecanum.followTrajectorySequence(t8First);
+        mecanum.followTrajectorySequence(t8_1);
         break;
       case SECOND:
-        mecanum.followTrajectorySequence(t8Second);
+        mecanum.followTrajectorySequence(t8_2);
         break;
       case THIRD:
-        mecanum.followTrajectorySequence(t8Third);
+        mecanum.followTrajectorySequence(t8_3);
         break;
     }
 
-    //    drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
     sleep(2000);
 
     auto.cleanup();

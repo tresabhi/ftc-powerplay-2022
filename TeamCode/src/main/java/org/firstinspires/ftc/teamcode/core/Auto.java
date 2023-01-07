@@ -61,12 +61,15 @@ public class Auto {
     telemetry.addLine("PRESS START");
   }
 
-  public void stop() {
-    camera.stopStreaming();
+  public void cleanup() {
+    // does nothing lmao got 'em
   }
 
   public void readEnvironment() {
     side = sleeveDetector.getSide();
-    telemetry.addLine("side detected" + side.name());
+    camera.stopStreaming();
+    telemetry.clearAll();
+    telemetry.addLine("side detected " + side.name());
+    telemetry.update();
   }
 }

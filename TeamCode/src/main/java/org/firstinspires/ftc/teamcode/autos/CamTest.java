@@ -19,6 +19,6 @@ public class CamTest extends LinearOpMode {
 
     }
 
-    auto.stop();
+    auto.cleanup();
   }
 }
