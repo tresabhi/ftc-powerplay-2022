@@ -20,20 +20,20 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t1 = mecanum
       .trajectorySequenceBuilder(new Pose2d())
-      .lineToLinearHeadingRelative(new Pose2d(18.5, 1))
+      .lineToLinearHeadingRelative(new Pose2d(19, 1))
       .build();
 
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
-      .forward(39.25)
+      .forward(39.75)
       .turn(Math.toRadians(-90))
-      .forward(3.5)
+      .forward(2.75)
       .build();
 
     TrajectorySequence t3 = mecanum
       .trajectorySequenceBuilder(t2.end())
-      .back(3)
-      .lineToLinearHeadingRelative(new Pose2d(-11.75, 0, Math.toRadians(180)))
+      .back(2.75)
+      .lineToLinearHeadingRelative(new Pose2d(-11.25, 0, Math.toRadians(180)))
       .lineToLinearHeadingRelative(new Pose2d(-0.5, 48.5))
       .build();
 
