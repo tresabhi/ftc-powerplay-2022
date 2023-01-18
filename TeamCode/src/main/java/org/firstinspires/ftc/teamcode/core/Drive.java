@@ -26,10 +26,10 @@ public class Drive {
   HardwareMap hardwareMap;
   Telemetry telemetry;
 
-  DcMotorEx extender;
+  public DcMotorEx extender;
   Servo claw;
 
-  public static double EXTENDER_POWER = 0.8;
+  public static double EXTENDER_POWER = 0.6;
   public static int EXTENDER_MIN = 0;
   public static int EXTENDER_MAX = 3800;
   public static int EXTENDER_GROUND = 0;
@@ -41,7 +41,7 @@ public class Drive {
   public static int EXTENDER_STACK_4 = 400;
   public double extenderState = EXTENDER_MIN;
 
-  public static double CLAW_CLOSED = 0.9;
+  public static double CLAW_CLOSED = 0.95;
   public static double CLAW_OPENED = 0.6;
 
   public Drive(HardwareMap hardwareMap, Telemetry telemetry) {

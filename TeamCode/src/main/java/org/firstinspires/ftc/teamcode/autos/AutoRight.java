@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.core.Drive;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "AutoRight", group = "Auto")
+@Autonomous(name = "![PROTO]AutoRight", group = "Auto")
 public class AutoRight extends LinearOpMode {
 
   @Override
@@ -20,12 +20,12 @@ public class AutoRight extends LinearOpMode {
 
     TrajectorySequence t1 = mecanum
       .trajectorySequenceBuilder(new Pose2d())
-      .lineToLinearHeadingRelative(new Pose2d(-26.5, 1))
+      .lineToLinearHeadingRelative(new Pose2d(-27, 1))
       .build();
 
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
-      .forward(37.25)
+      .forward(38)
       .turn(Math.toRadians(90))
       .forward(2.5)
       .build();
@@ -33,34 +33,34 @@ public class AutoRight extends LinearOpMode {
     TrajectorySequence t3 = mecanum
       .trajectorySequenceBuilder(t2.end())
       .back(3)
-      .lineToLinearHeadingRelative(new Pose2d(11.75, 0, Math.toRadians(180)))
+      .lineToLinearHeadingRelative(new Pose2d(11, 0, Math.toRadians(180)))
       .forward(48.5)
       .build();
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
-      .back(35.5)
+      .back(36.25)
       .turn(Math.toRadians(-90))
-      .forward(2.25)
+      .forward(3)
       .build();
 
     TrajectorySequence t5 = mecanum
       .trajectorySequenceBuilder(t4.end())
-      .back(1.75)
+      .back(2.5)
       .turn(Math.toRadians(90))
-      .lineToLinearHeadingRelative(new Pose2d(0.5, 35))
+      .forward(37.25)
       .build();
 
     TrajectorySequence t6 = mecanum
       .trajectorySequenceBuilder(t5.end())
-      .back(11)
+      .lineToLinearHeadingRelative(new Pose2d(0.5, -12.5))
       .turn(Math.toRadians(-90))
-      .forward(2.5)
+      .forward(2.75)
       .build();
 
     TrajectorySequence t7 = mecanum
       .trajectorySequenceBuilder(t6.end())
-      .back(2.5)
+      .back(2.25)
       .build();
 
     TrajectorySequence t8_1 = mecanum

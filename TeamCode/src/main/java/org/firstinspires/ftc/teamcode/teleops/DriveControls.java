@@ -65,6 +65,9 @@ public class DriveControls extends LinearOpMode {
     rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+    // make it faster in driver controls
+    drive.extender.setPower(1);
+
     waitForStart();
 
     while (!isStopRequested()) {
