@@ -33,11 +33,11 @@ public class DriveControls extends LinearOpMode {
 
   double initialRobotAngle;
 
-  public static double SPEED_NORMAL = 0.85;
-  public static double SPEED_LOW = 0.75;
+  public static double SPEED_NORMAL = 0.45;
+  public static double SPEED_LOW = 0.2;
   public static double SPEED_DAMP = 4;
-  public static double ROTATION_NORMAL = 0.85;
-  public static double ROTATION_SLOW = 0.75;
+  public static double ROTATION_NORMAL = 0.5;
+  public static double ROTATION_SLOW = 0.3;
   public static double ROTATION_DAMPENING = 4;
 
   public static int EXTENDER_SENSITIVITY = 20;

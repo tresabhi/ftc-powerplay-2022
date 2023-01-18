@@ -29,9 +29,9 @@ public class Drive {
   DcMotorEx extender;
   Servo claw;
 
-  public static double EXTENDER_POWER = 0.5;
+  public static double EXTENDER_POWER = 0.8;
   public static int EXTENDER_MIN = 0;
-  public static int EXTENDER_MAX = 4100;
+  public static int EXTENDER_MAX = 3800;
   public static int EXTENDER_GROUND = 0;
   public static int EXTENDER_ABOVE_GROUND = 250;
   public static int EXTENDER_LOW = 1650;
@@ -41,8 +41,8 @@ public class Drive {
   public static int EXTENDER_STACK_4 = 400;
   public double extenderState = EXTENDER_MIN;
 
-  public static double CLAW_CLOSED = 1;
-  public static double CLAW_OPENED = 0.3;
+  public static double CLAW_CLOSED = 0.9;
+  public static double CLAW_OPENED = 0.6;
 
   public Drive(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;

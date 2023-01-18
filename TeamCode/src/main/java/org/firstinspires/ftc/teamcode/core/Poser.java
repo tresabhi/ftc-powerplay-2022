@@ -16,7 +16,7 @@ public class Poser {
   }
 
   public double dampen(double value, double factor, double scale) {
-    return Math.signum(value) * Math.pow(Math.abs(value) * scale, factor);
+    return Math.signum(value) * Math.pow(Math.abs(value), factor) * scale;
   }
 
   public double dampen(double value, double factor) {
