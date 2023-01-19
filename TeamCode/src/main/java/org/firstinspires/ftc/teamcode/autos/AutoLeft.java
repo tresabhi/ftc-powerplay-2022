@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "AutoLeft", group = "Auto")
+@Autonomous(name = "![PROTO]AutoLeft", group = "Auto")
 public class AutoLeft extends LinearOpMode {
 
   @Override
@@ -25,42 +26,42 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
-      .forward(39.75)
+      .forward(39.5)
       .turn(Math.toRadians(-90))
-      .forward(2.75)
+      .forward(2.5)
       .build();
 
     TrajectorySequence t3 = mecanum
       .trajectorySequenceBuilder(t2.end())
-      .back(2.75)
+      .back(2.5)
       .lineToLinearHeadingRelative(new Pose2d(-11.25, 0, Math.toRadians(180)))
-      .lineToLinearHeadingRelative(new Pose2d(-0.5, 48.5))
+      .lineToLinearHeadingRelative(new Pose2d(0, 48.5))
       .build();
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
-      .back(37.5)
-      .turn(Math.toRadians(90))
-      .forward(2)
-      .build();
-
-    TrajectorySequence t5 = mecanum
-      .trajectorySequenceBuilder(t4.end())
-      .back(2)
-      .turn(Math.toRadians(-90))
-      .lineToLinearHeadingRelative(new Pose2d(0.25, 35.75))
-      .build();
-
-    TrajectorySequence t6 = mecanum
-      .trajectorySequenceBuilder(t5.end())
-      .lineToLinearHeadingRelative(new Pose2d(0.5, -11.5))
+      .back(37.25)
       .turn(Math.toRadians(90))
       .forward(2.25)
       .build();
 
+    TrajectorySequence t5 = mecanum
+      .trajectorySequenceBuilder(t4.end())
+      .back(2.5)
+      .turn(Math.toRadians(-90))
+      .lineToLinearHeadingRelative(new Pose2d(0.5, 37))
+      .build();
+
+    TrajectorySequence t6 = mecanum
+      .trajectorySequenceBuilder(t5.end())
+      .lineToLinearHeadingRelative(new Pose2d(-0.25, -13))
+      .turn(Math.toRadians(90))
+      .forward(2)
+      .build();
+
     TrajectorySequence t7 = mecanum
       .trajectorySequenceBuilder(t6.end())
-      .back(2.75)
+      .back(2.5)
       .build();
 
     TrajectorySequence t8_1 = mecanum
