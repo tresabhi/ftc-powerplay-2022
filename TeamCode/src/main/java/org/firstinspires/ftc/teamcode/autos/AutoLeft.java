@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "![PROTO]AutoLeft", group = "Auto")
+@Autonomous(name = "AutoLeft", group = "Auto")
 public class AutoLeft extends LinearOpMode {
 
   @Override
@@ -35,26 +35,26 @@ public class AutoLeft extends LinearOpMode {
       .trajectorySequenceBuilder(t2.end())
       .back(2.5)
       .lineToLinearHeadingRelative(new Pose2d(-11.25, 0, Math.toRadians(180)))
-      .lineToLinearHeadingRelative(new Pose2d(0, 48.5))
+      .lineToLinearHeadingRelative(new Pose2d(0, 47.5))
       .build();
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
       .back(37.25)
       .turn(Math.toRadians(90))
-      .forward(2.25)
+      .forward(2.75)
       .build();
 
     TrajectorySequence t5 = mecanum
       .trajectorySequenceBuilder(t4.end())
-      .back(2.5)
+      .back(2.75)
       .turn(Math.toRadians(-90))
-      .lineToLinearHeadingRelative(new Pose2d(0.5, 37))
+      .lineToLinearHeadingRelative(new Pose2d(-0.5, 36.5))
       .build();
 
     TrajectorySequence t6 = mecanum
       .trajectorySequenceBuilder(t5.end())
-      .lineToLinearHeadingRelative(new Pose2d(-0.25, -13))
+      .lineToLinearHeadingRelative(new Pose2d(-0.5, -13))
       .turn(Math.toRadians(90))
       .forward(2)
       .build();
