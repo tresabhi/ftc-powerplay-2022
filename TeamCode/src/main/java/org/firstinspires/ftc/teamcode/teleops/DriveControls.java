@@ -105,8 +105,7 @@ public class DriveControls extends LinearOpMode {
         AxesReference.INTRINSIC,
         AxesOrder.ZYX,
         AngleUnit.RADIANS
-      )
-        .firstAngle;
+      ).firstAngle;
       double movementAngle = -robotAngle - initialRobotAngle + gamepadAngle;
       double powerX = gamepadMove * Math.sin(movementAngle) / squareMagnitude;
       double powerY = gamepadMove * Math.cos(movementAngle) / squareMagnitude;
@@ -127,6 +126,8 @@ public class DriveControls extends LinearOpMode {
           initialRobotAngle = Math.PI / 2;
         }
       }
+
+      if (player1.right_stick_button) imu.initialize(imuParameters);
 
       // ########## EXTENDER ##########
       if (!player2.start) {
@@ -183,7 +184,6 @@ public class DriveControls extends LinearOpMode {
 
       // ########## TELEMETRY ##########
       telemetry.addData("God Mode", isGodModeEnabled);
-      telemetry.addData("God Mode Already Toggled", godModeAlreadyToggled);
       telemetry.addData("m", squareMagnitude);
       telemetry.addData("t", Math.atan2(player1.left_stick_y, player1.left_stick_x) / Math.PI * 180);
       telemetry.update();
