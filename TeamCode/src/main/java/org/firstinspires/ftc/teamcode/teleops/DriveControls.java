@@ -17,43 +17,35 @@ import org.firstinspires.ftc.teamcode.core.Poser;
 @TeleOp(group = "drive")
 @Config
 public class DriveControls extends LinearOpMode {
-
-  Poser poser = new Poser();
-  Drive drive;
-
-  BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
-
-  BNO055IMU imu;
-  DcMotorEx leftFront, leftRear, rightRear, rightFront;
-
-  boolean isGodModeEnabled = false;
-  boolean godModeAlreadyToggled = false;
-  Gamepad player1;
-  Gamepad player2;
-
-  double initialRobotAngle;
-
   public static double SPEED_NORMAL = 0.45;
   public static double SPEED_LOW = 0.2;
   public static double SPEED_DAMP = 4;
   public static double ROTATION_NORMAL = 0.5;
   public static double ROTATION_SLOW = 0.3;
   public static double ROTATION_DAMPENING = 4;
-
   public static int EXTENDER_SENSITIVITY = 20;
 
   @Override
   public void runOpMode() throws InterruptedException {
-    drive = new Drive(hardwareMap, telemetry);
+    double initialRobotAngle = 0;
 
-    player1 = gamepad1;
-    player2 = gamepad2;
+    boolean isGodModeEnabled = false;
+    boolean isBackAlreadyPressed = false;
+
+    Poser poser = new Poser();
+    Drive drive = new Drive(hardwareMap, telemetry);
+
+    Gamepad player1 = gamepad1;
+    Gamepad player2 = gamepad2;
+    BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+
     imuParameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-    imu = hardwareMap.get(BNO055IMU.class, "imu");
-    leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-    leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-    rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-    rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+    BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+    DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+    DcMotorEx leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+    DcMotorEx rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+    DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
 
     imu.initialize(imuParameters);
 
@@ -65,11 +57,9 @@ public class DriveControls extends LinearOpMode {
     rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-    // make it faster in driver controls
     drive.extender.setPower(1);
 
     waitForStart();
-
     while (!isStopRequested()) {
       // ########## WHEELS ##########
       double gamepadMove =
@@ -148,41 +138,22 @@ public class DriveControls extends LinearOpMode {
       );
 
       // ########## GOD MODE ##########
-      if (gamepad1.start && gamepad1.back) {
-        if (!godModeAlreadyToggled) {
+      if (gamepad1.back && !isBackAlreadyPressed) {
+        isBackAlreadyPressed = true;
+
+        if (gamepad1.start) {
           if (isGodModeEnabled) {
+            isGodModeEnabled = false;
             player1 = gamepad1;
             player2 = gamepad2;
-            isGodModeEnabled = false;
           } else {
+            isGodModeEnabled = true;
             player1 = gamepad1;
             player2 = gamepad1;
-            isGodModeEnabled = true;
           }
-
-          godModeAlreadyToggled = true;
         }
-      } else {
-        godModeAlreadyToggled = false;
       }
-
-      if (gamepad2.start && gamepad2.back) {
-        if (!godModeAlreadyToggled) {
-          if (isGodModeEnabled) {
-            player1 = gamepad1;
-            player2 = gamepad2;
-            isGodModeEnabled = false;
-          } else {
-            player1 = gamepad2;
-            player2 = gamepad2;
-            isGodModeEnabled = true;
-          }
-
-          godModeAlreadyToggled = true;
-        }
-      } else {
-        godModeAlreadyToggled = false;
-      }
+      if (!gamepad1.back) isBackAlreadyPressed = false;
 
       // ########## TELEMETRY ##########
       telemetry.addData("God Mode", isGodModeEnabled);
