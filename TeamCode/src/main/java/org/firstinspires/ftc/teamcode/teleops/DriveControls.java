@@ -117,17 +117,19 @@ public class DriveControls extends LinearOpMode {
 
       if (player1.start) {
         if (player1.dpad_up) {
+          imu.initialize(imuParameters);
           initialRobotAngle = 0;
         } else if (player1.dpad_right) {
+          imu.initialize(imuParameters);
           initialRobotAngle = -Math.PI / 2;
         } else if (player1.dpad_down) {
+          imu.initialize(imuParameters);
           initialRobotAngle = Math.PI;
         } else if (player1.dpad_left) {
+          imu.initialize(imuParameters);
           initialRobotAngle = Math.PI / 2;
         }
       }
-
-      if (player1.right_stick_button) imu.initialize(imuParameters);
 
       // ########## EXTENDER ##########
       if (!player2.start) {
