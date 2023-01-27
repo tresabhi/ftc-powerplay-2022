@@ -30,11 +30,8 @@ public class DriveControls extends LinearOpMode {
     double initialRobotAngle = 0;
 
     boolean isGodModeEnabled = false;
-    boolean isWindowsCompatibilityEnabled = false;
 
     boolean isBackAlreadyPressed = false;
-    boolean isDPadDownAlreadyPressed = false;
-
 
     Poser poser = new Poser();
     Drive drive = new Drive(hardwareMap, telemetry);
@@ -60,8 +57,6 @@ public class DriveControls extends LinearOpMode {
     leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-    drive.extender.setPower(1);
 
     waitForStart();
     while (!isStopRequested()) {
@@ -91,7 +86,7 @@ public class DriveControls extends LinearOpMode {
         -player1.left_stick_x
       );
       double gamepadTurnY = poser.dampen(
-        isWindowsCompatibilityEnabled ? player1.right_stick_y : player1.right_stick_x,
+        player1.right_stick_x,
         ROTATION_DAMPENING,
         player1.right_bumper ? ROTATION_SLOW : ROTATION_NORMAL
       );
@@ -158,13 +153,6 @@ public class DriveControls extends LinearOpMode {
         }
       }
       if (!gamepad1.back) isBackAlreadyPressed = false;
-
-      // ########## WINDOWS COMPATIBILITY ##########
-      if (player1.dpad_down && !isDPadDownAlreadyPressed) {
-        isDPadDownAlreadyPressed = true;
-        isWindowsCompatibilityEnabled = !isWindowsCompatibilityEnabled;
-      }
-      if (!player1.dpad_down) isDPadDownAlreadyPressed = false;
 
       // ########## TELEMETRY ##########
       telemetry.addData("God Mode", isGodModeEnabled);

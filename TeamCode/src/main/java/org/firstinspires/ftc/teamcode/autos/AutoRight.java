@@ -134,7 +134,6 @@ public class AutoRight extends LinearOpMode {
     }
 
     sleep(2000);
-
     auto.cleanup();
   }
 }

@@ -21,62 +21,62 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t1 = mecanum
       .trajectorySequenceBuilder(new Pose2d())
-      .lineToLinearHeadingRelative(new Pose2d(19, 1))
+      .strafeRight(20.5)
       .build();
 
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
-      .forward(39.5)
-      .turn(Math.toRadians(-90))
-      .forward(3)
+      .forward(24)
+      .lineToLinearHeadingRelative(new Pose2d(-2, 15, Math.toRadians(90)))
       .build();
 
     TrajectorySequence t3 = mecanum
       .trajectorySequenceBuilder(t2.end())
-      .back(3)
-      .lineToLinearHeadingRelative(new Pose2d(-11.25, 0, Math.toRadians(180)))
-      .lineToLinearHeadingRelative(new Pose2d(0, 47.5))
+      .strafeRight(13.5)
       .build();
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
-      .back(36.75)
-      .turn(Math.toRadians(90))
-      .forward(2.75)
+      .forward(47)
       .build();
 
     TrajectorySequence t5 = mecanum
       .trajectorySequenceBuilder(t4.end())
-      .back(2.75)
-      .turn(Math.toRadians(-90))
-      .lineToLinearHeadingRelative(new Pose2d(-0.5, 36.75))
+      .lineToLinearHeadingRelative(new Pose2d(-1, -37.75, Math.toRadians(90)))
+      .forward(2)
       .build();
 
     TrajectorySequence t6 = mecanum
       .trajectorySequenceBuilder(t5.end())
-      .lineToLinearHeadingRelative(new Pose2d(-0.5, -12.25))
-      .turn(Math.toRadians(90))
-      .forward(2)
+      .back(2)
+      .lineToLinearHeadingRelative(new Pose2d(12, 0, Math.toRadians(-90)))
+      .lineToLinearHeadingRelative(new Pose2d(0, 25))
       .build();
 
     TrajectorySequence t7 = mecanum
       .trajectorySequenceBuilder(t6.end())
-      .back(2.5)
+      .lineToLinearHeadingRelative(new Pose2d(-1, -37, Math.toRadians(90)))
+      .forward(1.75)
       .build();
 
-    TrajectorySequence t8_1 = mecanum
+    TrajectorySequence t8 = mecanum
       .trajectorySequenceBuilder(t7.end())
-      .strafeRight(11)
+      .back(2)
       .build();
 
-    TrajectorySequence t8_2 = mecanum
-      .trajectorySequenceBuilder(t7.end())
-      .strafeLeft(11)
+    TrajectorySequence t9_1 = mecanum
+      .trajectorySequenceBuilder(t8.end())
+      .strafeRight(36)
       .build();
 
-    TrajectorySequence t8_3 = mecanum
-      .trajectorySequenceBuilder(t7.end())
-      .strafeLeft(35)
+    TrajectorySequence t9_2 = mecanum
+      .trajectorySequenceBuilder(t8.end())
+      .strafeRight(12)
+      .build();
+
+    TrajectorySequence t9_3 = mecanum
+      .trajectorySequenceBuilder(t8.end())
+      .strafeLeft(12)
       .build();
 
     drive.setClawState(Drive.ClawState.CLOSE);
@@ -89,54 +89,63 @@ public class AutoLeft extends LinearOpMode {
 
     mecanum.followTrajectorySequence(t1);
 
-    drive.setExtenderLevel(Drive.ExtenderLevel.HIGH);
-    mecanum.followTrajectorySequence(t2);
-
     drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
-    sleep(1000);
+
+    mecanum.followTrajectorySequence(t2);
+    sleep(500);
 
     drive.setClawState(Drive.ClawState.OPEN);
-    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
+    sleep(250);
+
     mecanum.followTrajectorySequence(t3);
+
+    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
+    mecanum.followTrajectorySequence(t4);
 
     drive.setClawState(Drive.ClawState.CLOSE);
     sleep(250);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
-    mecanum.followTrajectorySequence(t4);
+    sleep(250);
+
+    mecanum.followTrajectorySequence(t5);
+    sleep(500);
 
     drive.setClawState(Drive.ClawState.OPEN);
     sleep(250);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.STACK_4);
-    mecanum.followTrajectorySequence(t5);
+    mecanum.followTrajectorySequence(t6);
 
     drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(500);
-
-    drive.setExtenderLevel(Drive.ExtenderLevel.LOW);
-    mecanum.followTrajectorySequence(t6);
     sleep(250);
 
-    drive.setClawState(Drive.ClawState.OPEN);
+    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
+    sleep(250);
+
     mecanum.followTrajectorySequence(t7);
+    sleep(500);
+
+    drive.setClawState(Drive.ClawState.OPEN);
+    sleep(250);
+
+    mecanum.followTrajectorySequence(t8);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
     switch (auto.side) {
       case NONE:
       case FIRST:
-        mecanum.followTrajectorySequence(t8_1);
+        mecanum.followTrajectorySequence(t9_1);
         break;
       case SECOND:
-        mecanum.followTrajectorySequence(t8_2);
+        mecanum.followTrajectorySequence(t9_2);
         break;
       case THIRD:
-        mecanum.followTrajectorySequence(t8_3);
+        mecanum.followTrajectorySequence(t9_3);
         break;
     }
 
     sleep(2000);
-
     auto.cleanup();
   }
 }

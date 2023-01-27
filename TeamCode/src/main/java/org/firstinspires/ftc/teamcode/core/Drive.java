@@ -29,7 +29,7 @@ public class Drive {
   public DcMotorEx extender;
   Servo claw;
 
-  public static double EXTENDER_POWER = 0.6;
+  public static double EXTENDER_POWER = 1;
   public static int EXTENDER_MIN = 0;
   public static int EXTENDER_MAX = 3800;
   public static int EXTENDER_GROUND = 0;
