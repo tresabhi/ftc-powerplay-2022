@@ -27,7 +27,7 @@ public class AutoLeft extends LinearOpMode {
     TrajectorySequence t2 = mecanum
       .trajectorySequenceBuilder(t1.end())
       .forward(24)
-      .lineToLinearHeadingRelative(new Pose2d(-2, 15, Math.toRadians(90)))
+      .lineToLinearHeadingRelative(new Pose2d(-2.25, 15, Math.toRadians(90)))
       .build();
 
     TrajectorySequence t3 = mecanum
@@ -37,7 +37,7 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t4 = mecanum
       .trajectorySequenceBuilder(t3.end())
-      .forward(47)
+      .forward(46.75)
       .build();
 
     TrajectorySequence t5 = mecanum
@@ -48,20 +48,20 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t6 = mecanum
       .trajectorySequenceBuilder(t5.end())
-      .back(2)
+      .back(3)
       .lineToLinearHeadingRelative(new Pose2d(12, 0, Math.toRadians(-90)))
-      .lineToLinearHeadingRelative(new Pose2d(0, 25))
+      .lineToLinearHeadingRelative(new Pose2d(-0.5, 25))
       .build();
 
     TrajectorySequence t7 = mecanum
       .trajectorySequenceBuilder(t6.end())
-      .lineToLinearHeadingRelative(new Pose2d(-1, -37, Math.toRadians(90)))
-      .forward(1.75)
+      .lineToLinearHeadingRelative(new Pose2d(-1.5, -37, Math.toRadians(90)))
+      .forward(2)
       .build();
 
     TrajectorySequence t8 = mecanum
       .trajectorySequenceBuilder(t7.end())
-      .back(2)
+      .back(3)
       .build();
 
     TrajectorySequence t9_1 = mecanum
