@@ -42,7 +42,7 @@ public class AutoLeft extends LinearOpMode {
 
     TrajectorySequence t5 = mecanum
       .trajectorySequenceBuilder(t4.end())
-      .lineToLinearHeadingRelative(new Pose2d(-1, -37.75, Math.toRadians(90)))
+      .lineToLinearHeadingRelative(new Pose2d(-1, -38.75, Math.toRadians(90)))
       .forward(2)
       .build();
 
@@ -50,7 +50,7 @@ public class AutoLeft extends LinearOpMode {
       .trajectorySequenceBuilder(t5.end())
       .back(3)
       .lineToLinearHeadingRelative(new Pose2d(12, 0, Math.toRadians(-90)))
-      .lineToLinearHeadingRelative(new Pose2d(-0.5, 25))
+      .lineToLinearHeadingRelative(new Pose2d(-0.5, 26))
       .build();
 
     TrajectorySequence t7 = mecanum
