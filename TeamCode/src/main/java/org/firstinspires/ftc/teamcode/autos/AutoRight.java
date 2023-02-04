@@ -55,7 +55,7 @@ public class AutoRight extends LinearOpMode {
 
     TrajectorySequence t7 = mecanum
             .trajectorySequenceBuilder(t6.end())
-            .lineToLinearHeadingRelative(new Pose2d(-1.5, -37, Math.toRadians(-90)))
+            .lineToLinearHeadingRelative(new Pose2d(-1.5, -36.25, Math.toRadians(-90)))
             .forward(4.25)
             .build();
 
@@ -94,7 +94,13 @@ public class AutoRight extends LinearOpMode {
     mecanum.followTrajectorySequence(t2);
     sleep(500);
 
+    drive.addExtenderPosition(-200);
+    sleep(250);
+
     drive.setClawState(Drive.ClawState.OPEN);
+    sleep(250);
+
+    drive.addExtenderPosition(200);
     sleep(250);
 
     mecanum.followTrajectorySequence(t3);
@@ -111,7 +117,13 @@ public class AutoRight extends LinearOpMode {
     mecanum.followTrajectorySequence(t5);
     sleep(500);
 
+    drive.addExtenderPosition(-200);
+    sleep(250);
+
     drive.setClawState(Drive.ClawState.OPEN);
+    sleep(250);
+
+    drive.addExtenderPosition(200);
     sleep(250);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.STACK_4);
@@ -126,7 +138,13 @@ public class AutoRight extends LinearOpMode {
     mecanum.followTrajectorySequence(t7);
     sleep(500);
 
+    drive.addExtenderPosition(-200);
+    sleep(250);
+
     drive.setClawState(Drive.ClawState.OPEN);
+    sleep(250);
+
+    drive.addExtenderPosition(200);
     sleep(250);
 
     mecanum.followTrajectorySequence(t8);
