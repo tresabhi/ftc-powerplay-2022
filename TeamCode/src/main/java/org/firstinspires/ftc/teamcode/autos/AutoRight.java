@@ -27,22 +27,23 @@ public class AutoRight extends LinearOpMode {
     TrajectorySequence t2 = mecanum
             .trajectorySequenceBuilder(t1.end())
             .forward(22)
-            .lineToLinearHeadingRelative(new Pose2d(3.5, 15.25, Math.toRadians(-90)))
+            .lineToLinearHeadingRelative(new Pose2d(3.5, 14.75, Math.toRadians(-90)))
             .build();
 
     TrajectorySequence t3 = mecanum
             .trajectorySequenceBuilder(t2.end())
-            .strafeLeft(12)
+            .strafeLeft(12.75)
             .build();
 
     TrajectorySequence t4 = mecanum
             .trajectorySequenceBuilder(t3.end())
             .forward(46.75)
+            .back(0.75)
             .build();
 
     TrajectorySequence t5 = mecanum
             .trajectorySequenceBuilder(t4.end())
-            .lineToLinearHeadingRelative(new Pose2d(0, -38, Math.toRadians(-90)))
+            .lineToLinearHeadingRelative(new Pose2d(-0.25, -38, Math.toRadians(-90)))
             .forward(2.75)
             .build();
 
@@ -50,13 +51,14 @@ public class AutoRight extends LinearOpMode {
             .trajectorySequenceBuilder(t5.end())
             .back(3)
             .lineToLinearHeadingRelative(new Pose2d(-12, 0, Math.toRadians(90)))
-            .lineToLinearHeadingRelative(new Pose2d(0.75, 25))
+            .lineToLinearHeadingRelative(new Pose2d(1.25, 25))
+            .back(0.75)
             .build();
 
     TrajectorySequence t7 = mecanum
             .trajectorySequenceBuilder(t6.end())
             .lineToLinearHeadingRelative(new Pose2d(-1.5, -36.25, Math.toRadians(-90)))
-            .forward(4.25)
+            .forward(3.75)
             .build();
 
     TrajectorySequence t8 = mecanum

@@ -20,64 +20,66 @@ public class AutoLeft extends LinearOpMode {
     Drive drive = new Drive(hardwareMap, telemetry);
 
     TrajectorySequence t1 = mecanum
-      .trajectorySequenceBuilder(new Pose2d())
-      .strafeRight(20.5)
-      .build();
+            .trajectorySequenceBuilder(new Pose2d())
+            .strafeRight(20.5)
+            .build();
 
     TrajectorySequence t2 = mecanum
-      .trajectorySequenceBuilder(t1.end())
-      .forward(24)
-      .lineToLinearHeadingRelative(new Pose2d(-2.25, 15, Math.toRadians(90)))
-      .build();
+            .trajectorySequenceBuilder(t1.end())
+            .forward(24)
+            .lineToLinearHeadingRelative(new Pose2d(-2.25, 15, Math.toRadians(90)))
+            .build();
 
     TrajectorySequence t3 = mecanum
-      .trajectorySequenceBuilder(t2.end())
-      .strafeRight(13.5)
-      .build();
+            .trajectorySequenceBuilder(t2.end())
+            .strafeRight(13.5)
+            .build();
 
     TrajectorySequence t4 = mecanum
-      .trajectorySequenceBuilder(t3.end())
-      .forward(46.75)
-      .build();
+            .trajectorySequenceBuilder(t3.end())
+            .forward(46.75)
+            .back(0.75)
+            .build();
 
     TrajectorySequence t5 = mecanum
-      .trajectorySequenceBuilder(t4.end())
-      .lineToLinearHeadingRelative(new Pose2d(-1, -38.75, Math.toRadians(90)))
-      .forward(2.25)
-      .build();
+            .trajectorySequenceBuilder(t4.end())
+            .lineToLinearHeadingRelative(new Pose2d(-1, -38.75, Math.toRadians(90)))
+            .forward(2.25)
+            .build();
 
     TrajectorySequence t6 = mecanum
-      .trajectorySequenceBuilder(t5.end())
-      .back(3.25)
-      .lineToLinearHeadingRelative(new Pose2d(12, 0, Math.toRadians(-90)))
-      .lineToLinearHeadingRelative(new Pose2d(0.5, 26))
-      .build();
+            .trajectorySequenceBuilder(t5.end())
+            .back(3.25)
+            .lineToLinearHeadingRelative(new Pose2d(12, 0, Math.toRadians(-90)))
+            .lineToLinearHeadingRelative(new Pose2d(0.5, 26))
+            .back(0.75)
+            .build();
 
     TrajectorySequence t7 = mecanum
-      .trajectorySequenceBuilder(t6.end())
-      .lineToLinearHeadingRelative(new Pose2d(-2.75, -37, Math.toRadians(90)))
-      .forward(2)
-      .build();
+            .trajectorySequenceBuilder(t6.end())
+            .lineToLinearHeadingRelative(new Pose2d(-2.75, -37, Math.toRadians(90)))
+            .forward(2)
+            .build();
 
     TrajectorySequence t8 = mecanum
-      .trajectorySequenceBuilder(t7.end())
-      .back(3)
-      .build();
+            .trajectorySequenceBuilder(t7.end())
+            .back(3)
+            .build();
 
     TrajectorySequence t9_1 = mecanum
-      .trajectorySequenceBuilder(t8.end())
-      .strafeRight(36)
-      .build();
+            .trajectorySequenceBuilder(t8.end())
+            .strafeRight(36)
+            .build();
 
     TrajectorySequence t9_2 = mecanum
-      .trajectorySequenceBuilder(t8.end())
-      .strafeRight(12)
-      .build();
+            .trajectorySequenceBuilder(t8.end())
+            .strafeRight(12)
+            .build();
 
     TrajectorySequence t9_3 = mecanum
-      .trajectorySequenceBuilder(t8.end())
-      .strafeLeft(12)
-      .build();
+            .trajectorySequenceBuilder(t8.end())
+            .strafeLeft(12)
+            .build();
 
     drive.setClawState(Drive.ClawState.CLOSE);
 
