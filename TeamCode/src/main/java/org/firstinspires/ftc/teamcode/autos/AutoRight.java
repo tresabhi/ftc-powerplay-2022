@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -85,7 +84,7 @@ public class AutoRight extends LinearOpMode {
 
     auto.init();
     waitForStart();
-    auto.readEnvironment();
+    auto.readSleeve();
 
     drive.setExtenderLevel(Drive.ExtenderLevel.ABOVE_GROUND);
 
@@ -152,7 +151,7 @@ public class AutoRight extends LinearOpMode {
     mecanum.followTrajectorySequence(t8);
 
     drive.setExtenderLevel(Drive.ExtenderLevel.GROUND);
-    switch (auto.side) {
+    switch (auto.sleeveSide) {
       case NONE:
       case FIRST:
         mecanum.followTrajectorySequence(t9_1);
@@ -166,6 +165,5 @@ public class AutoRight extends LinearOpMode {
     }
 
     sleep(2000);
-    auto.cleanup();
   }
 }
