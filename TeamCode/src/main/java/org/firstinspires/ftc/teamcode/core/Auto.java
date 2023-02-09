@@ -80,6 +80,6 @@ public class Auto {
   }
 
   public void readDistance() {
-    distance = distanceSensor.;
+//    distance = distanceSensor.;
   }
 }
