@@ -19,7 +19,6 @@ public class Auto {
   Telemetry telemetry;
   OpenCvCamera camera;
   SleeveDetector sleeveDetector;
-  AnalogInput distanceSensor;
   public SleeveDetector.Side sleeveSide;
   public double distance = -1;
 
@@ -27,7 +26,6 @@ public class Auto {
     this.hardwareMap = hardwareMap;
     this.telemetry = telemetry;
     this.sleeveDetector = new SleeveDetector(telemetry);
-    this.distanceSensor = hardwareMap.get(AnalogInput.class, "distanceSensor");
   }
 
   public void init() {
