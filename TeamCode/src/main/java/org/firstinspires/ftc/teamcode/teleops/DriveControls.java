@@ -43,20 +43,7 @@ public class DriveControls extends LinearOpMode {
     imuParameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
     BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-    DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-    DcMotorEx leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-    DcMotorEx rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-    DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-
     imu.initialize(imuParameters);
-
-    leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
-    rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-    rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-    leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     waitForStart();
     while (!isStopRequested()) {
@@ -99,10 +86,10 @@ public class DriveControls extends LinearOpMode {
       double powerX = gamepadMove * Math.sin(movementAngle) / squareMagnitude;
       double powerY = gamepadMove * Math.cos(movementAngle) / squareMagnitude;
 
-      leftFront.setPower(-powerY - powerX + gamepadTurnY);
-      leftRear.setPower(powerY - powerX + gamepadTurnY);
-      rightRear.setPower(-powerY - powerX - gamepadTurnY);
-      rightFront.setPower(powerY - powerX - gamepadTurnY);
+      drive.leftFront.setPower(-powerY - powerX + gamepadTurnY);
+      drive.leftRear.setPower(powerY - powerX + gamepadTurnY);
+      drive.rightRear.setPower(-powerY - powerX - gamepadTurnY);
+      drive.rightFront.setPower(powerY - powerX - gamepadTurnY);
 
       if (player1.start) {
         if (player1.dpad_up) {

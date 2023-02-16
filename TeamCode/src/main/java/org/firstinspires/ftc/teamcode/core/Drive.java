@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -46,9 +47,27 @@ public class Drive {
   public static double CLAW_CLOSED = 0.95;
   public static double CLAW_OPENED = 0.6;
 
+  public static DcMotorEx leftFront;
+  public static DcMotorEx leftRear;
+  public static DcMotorEx rightRear;
+  public static DcMotorEx rightFront;
+
   public Drive(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
     this.telemetry = telemetry;
+
+    leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+    leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+    rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+    rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+
+    leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+    rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+    rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     extender = hardwareMap.get(DcMotorEx.class, "extender");
     claw = hardwareMap.get(Servo.class, "claw");

@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.core.Drive;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "![AAPROTO]AutoRight", group = "Auto")
+@Autonomous(name = "AutoRight", group = "Auto")
 public class AutoRight extends LinearOpMode {
 
   @Override
