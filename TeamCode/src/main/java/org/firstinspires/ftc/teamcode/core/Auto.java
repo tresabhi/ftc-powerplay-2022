@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.core;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,16 +16,29 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 public class Auto {
+  public enum Alliance {
+    Blue,
+    Red
+  }
+
   HardwareMap hardwareMap;
   Telemetry telemetry;
   OpenCvCamera camera;
   SleeveDetector sleeveDetector;
   ColorRangeSensor colorSensorLeft;
   RevColorSensorV3 colorSensorRight;
+  ModernRoboticsAnalogOpticalDistanceSensor distanceSensor;
   BNO055IMU imu;
   public SleeveDetector.Side sleeveSide;
   public double colorLeft = 0;
   public double colorRight = 0;
+  public double distance = 0;
+  public double heheheha = 0;
+
+  double BLUE_DISTANCE = 0.28;
+  double RED_DISTANCE = 0.70;
+  double MIN_RUNTIME = 2000;
+  double MAX_RUNTIME = 5000;
 
   public Auto(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
@@ -32,6 +46,7 @@ public class Auto {
     this.sleeveDetector = new SleeveDetector(telemetry);
     this.colorSensorLeft = hardwareMap.get(ColorRangeSensor.class, "colorSensorLeft");
     this.colorSensorRight = hardwareMap.get(RevColorSensorV3.class, "colorSensorRight");
+    this.distanceSensor = hardwareMap.get(ModernRoboticsAnalogOpticalDistanceSensor.class, "distanceSensor");
     this.imu = hardwareMap.get(BNO055IMU.class, "imu");
 
   }
@@ -100,29 +115,43 @@ public class Auto {
     camera.stopStreaming();
   }
 
-  public void readColor() {
-    colorLeft = colorSensorLeft.getRawLightDetected();
-    colorRight = colorSensorRight.getRawLightDetected();
-  }
+  public void approachConeStack(Drive drive, double targetAngle, Alliance alliance) {
+    double offsetPower = 1, rotationOffsetPower = 1, distancePower = 1;
+    double time = 0;
+    double startTime = System.currentTimeMillis();
 
-  public void approachConeStack(Drive drive, double targetAngle) {
-    readColor();
+    while (
+            (
+                    (Math.abs(offsetPower) + Math.abs(rotationOffsetPower) + Math.abs(distancePower)) < 0.05 || (time) < MIN_RUNTIME
+            ) && (time) < MAX_RUNTIME
+    ) {
+      time = System.currentTimeMillis() - startTime;
 
-    double offsetRaw = colorRight - colorLeft;
-    double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 150)) ;
-    double offsetPower = offsetScaled * 0.25;
-    double robotAngle = imu.getAngularOrientation(
-            AxesReference.INTRINSIC,
-            AxesOrder.ZYX,
-            AngleUnit.RADIANS
-    ).firstAngle % (2 * Math.PI);
-    double rotationOffsetRaw = targetAngle - robotAngle;
-    double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(4)));
-    double rotationOffsetPower = rotationOffsetScaled * 0.25;
+      colorLeft = colorSensorLeft.getRawLightDetected();
+      colorRight = colorSensorRight.getRawLightDetected();
+      distance = distanceSensor.getLightDetected();
 
-    drive.leftFront.setPower(offsetPower - rotationOffsetPower);
-    drive.leftRear.setPower(-offsetPower - rotationOffsetPower);
-    drive.rightRear.setPower(offsetPower + rotationOffsetPower);
-    drive.rightFront.setPower(-offsetPower + rotationOffsetPower);
+      double offsetRaw = colorRight - colorLeft;
+      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 150));
+      offsetPower = offsetScaled * 0.2;
+
+      double robotAngle = imu.getAngularOrientation(
+              AxesReference.INTRINSIC,
+              AxesOrder.ZYX,
+              AngleUnit.RADIANS
+      ).firstAngle % (2 * Math.PI);
+      double rotationOffsetRaw = targetAngle - robotAngle;
+      double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(4)));
+      rotationOffsetPower = rotationOffsetScaled * 0.2;
+
+      double maxDistance = alliance == Alliance.Blue ? BLUE_DISTANCE : RED_DISTANCE;
+      double distanceDiff = Math.max(-1, Math.min(1, (maxDistance - distance) * 7.5));
+      distancePower = distanceDiff * 0.15;
+
+      drive.leftFront.setPower(offsetPower - rotationOffsetPower + distancePower);
+      drive.leftRear.setPower(-offsetPower - rotationOffsetPower + distancePower);
+      drive.rightRear.setPower(offsetPower + rotationOffsetPower + distancePower);
+      drive.rightFront.setPower(-offsetPower + rotationOffsetPower + distancePower);
+    }
   }
 }
