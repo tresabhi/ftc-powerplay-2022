@@ -35,7 +35,7 @@ public class Auto {
   public double distance = 0;
 
   double BLUE_DISTANCE = 0.285;
-  double RED_DISTANCE = 0.65;
+  double RED_DISTANCE = 0.68;
   double MIN_RUNTIME = 2000;
   double MAX_RUNTIME = 5000;
 
@@ -116,14 +116,11 @@ public class Auto {
 
   public void approachConeStack(Drive drive, double targetAngle, Alliance alliance) {
     double offsetPower = 1, rotationOffsetPower = 1, distancePower = 1;
+    double distanceDiffRaw = 1;
     double time = 0;
     double startTime = System.currentTimeMillis();
 
-    while (
-            (
-                    (Math.abs(offsetPower) + Math.abs(rotationOffsetPower) + Math.abs(distancePower)) < 0.05 || (time) < MIN_RUNTIME
-            ) && (time) < MAX_RUNTIME
-    ) {
+    while (((Math.abs(offsetPower) + Math.abs(rotationOffsetPower) + Math.abs(distancePower)) < 0.05 || (time) < MIN_RUNTIME) && (time) < MAX_RUNTIME) {
       time = System.currentTimeMillis() - startTime;
 
       colorLeft = colorSensorLeft.getRawLightDetected();
@@ -131,8 +128,8 @@ public class Auto {
       distance = distanceSensor.getLightDetected();
 
       double offsetRaw = colorRight - colorLeft;
-      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 200));
-      offsetPower = offsetScaled * 0.15;
+      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 150));
+      offsetPower = offsetScaled * 0.2;
 
       double robotAngle = imu.getAngularOrientation(
               AxesReference.INTRINSIC,
@@ -144,13 +141,17 @@ public class Auto {
       rotationOffsetPower = rotationOffsetScaled * 0.2;
 
       double maxDistance = alliance == Alliance.Blue ? BLUE_DISTANCE : RED_DISTANCE;
-      double distanceDiff = Math.max(-1, Math.min(1, (maxDistance - distance) * 7.5));
+      distanceDiffRaw = maxDistance - distance;
+      double distanceDiff = Math.max(-1, Math.min(1, (distanceDiffRaw) * 7.5));
       distancePower = distanceDiff * 0.15;
 
       drive.leftFront.setPower(offsetPower - rotationOffsetPower + distancePower);
       drive.leftRear.setPower(-offsetPower - rotationOffsetPower + distancePower);
       drive.rightRear.setPower(offsetPower + rotationOffsetPower + distancePower);
       drive.rightFront.setPower(-offsetPower + rotationOffsetPower + distancePower);
+
+      telemetry.addData("distance", distance);
+      telemetry.update();
     }
 
     drive.leftFront.setPower(0);
