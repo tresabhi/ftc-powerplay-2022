@@ -15,19 +15,14 @@ public class ConeStackApproachTest extends LinearOpMode {
     Drive drive = new Drive(hardwareMap, telemetry);
 
     drive.setClawState(Drive.ClawState.OPEN);
+    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
     auto.init(false);
     waitForStart();
-
-    drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
-    sleep(500);
 
     auto.approachConeStack(drive, 0, Auto.Alliance.Blue);
 
     drive.setClawState(Drive.ClawState.CLOSE);
-    sleep(2000);
-
-    drive.setExtenderLevel(Drive.ExtenderLevel.MEDIUM);
-    sleep(99999);
+    sleep(999999);
 
     telemetry.update();
   }

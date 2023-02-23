@@ -33,9 +33,8 @@ public class Auto {
   public double colorLeft = 0;
   public double colorRight = 0;
   public double distance = 0;
-  public double heheheha = 0;
 
-  double BLUE_DISTANCE = 0.28;
+  double BLUE_DISTANCE = 0.285;
   double RED_DISTANCE = 0.70;
   double MIN_RUNTIME = 2000;
   double MAX_RUNTIME = 5000;
