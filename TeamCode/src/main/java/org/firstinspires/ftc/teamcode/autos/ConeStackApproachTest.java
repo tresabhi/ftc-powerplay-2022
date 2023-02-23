@@ -19,7 +19,7 @@ public class ConeStackApproachTest extends LinearOpMode {
     auto.init(false);
     waitForStart();
 
-    auto.approachConeStack(drive, 0, Auto.Alliance.Blue);
+    auto.approachConeStack(drive, 0, Auto.Alliance.Red);
 
     drive.setClawState(Drive.ClawState.CLOSE);
     sleep(999999);

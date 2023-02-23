@@ -35,7 +35,7 @@ public class Auto {
   public double distance = 0;
 
   double BLUE_DISTANCE = 0.285;
-  double RED_DISTANCE = 0.70;
+  double RED_DISTANCE = 0.65;
   double MIN_RUNTIME = 2000;
   double MAX_RUNTIME = 5000;
 
@@ -131,8 +131,8 @@ public class Auto {
       distance = distanceSensor.getLightDetected();
 
       double offsetRaw = colorRight - colorLeft;
-      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 150));
-      offsetPower = offsetScaled * 0.2;
+      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 200));
+      offsetPower = offsetScaled * 0.15;
 
       double robotAngle = imu.getAngularOrientation(
               AxesReference.INTRINSIC,
@@ -151,6 +151,15 @@ public class Auto {
       drive.leftRear.setPower(-offsetPower - rotationOffsetPower + distancePower);
       drive.rightRear.setPower(offsetPower + rotationOffsetPower + distancePower);
       drive.rightFront.setPower(-offsetPower + rotationOffsetPower + distancePower);
+    }
+
+    drive.leftFront.setPower(0);
+    drive.leftRear.setPower(0);
+    drive.rightRear.setPower(0);
+    drive.rightFront.setPower(0);
+
+    if (time >= MAX_RUNTIME) {
+      throw new RuntimeException("Cone-stack approach exceeded maximum time");
     }
   }
 }
