@@ -25,7 +25,7 @@ public class SleeveDetector extends OpenCvPipeline {
   public static double ROI_WIDTH = 128;
   public static double ROI_HEIGHT = 64;
   public static double ROI_X = 155;
-  public static double ROI_Y = 127;
+  public static double ROI_Y = 178;
 
   // in RGB
   static Scalar COLOR_1 = new Scalar(255, 0, 0);
@@ -34,14 +34,16 @@ public class SleeveDetector extends OpenCvPipeline {
   static Scalar COLOR_NONE = new Scalar(255, 255, 255);
   double max;
 
+  public static double SATURATION_MIN = 50;
+  public static double VALUE_MIN = 40;
   // in HSV
-  static Scalar HSV_LOW_1_RIGHT = new Scalar(0, 0, 0);
+  static Scalar HSV_LOW_1_RIGHT = new Scalar(0, SATURATION_MIN, VALUE_MIN);
   static Scalar HSV_HIGH_1_RIGHT = new Scalar(30, 255, 255);
-  static Scalar HSV_LOW_1_LEFT = new Scalar(150, 0, 0);
+  static Scalar HSV_LOW_1_LEFT = new Scalar(150, SATURATION_MIN, VALUE_MIN);
   static Scalar HSV_HIGH_1_LEFT = new Scalar(180, 255, 255);
-  static Scalar HSV_LOW_2 = new Scalar(30, 0, 0);
+  static Scalar HSV_LOW_2 = new Scalar(30, SATURATION_MIN, VALUE_MIN);
   static Scalar HSV_HIGH_2 = new Scalar(90, 255, 255);
-  static Scalar HSV_LOW_3 = new Scalar(90, 0, 0);
+  static Scalar HSV_LOW_3 = new Scalar(90, SATURATION_MIN, VALUE_MIN);
   static Scalar HSV_HIGH_3 = new Scalar(150, 255, 255);
 
   static Rect ROI = new Rect(

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
-@Autonomous(name = "![AAPROTO]ConeStackApproachTest", group = "Auto")
+@Autonomous(name = "ConeStackApproachTest", group = "Auto")
 public class ConeStackApproachTest extends LinearOpMode {
 
   @Override
