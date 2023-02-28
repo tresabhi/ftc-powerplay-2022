@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.core.Auto;
 import org.firstinspires.ftc.teamcode.core.Drive;
 
@@ -19,11 +20,9 @@ public class ConeStackApproachTest extends LinearOpMode {
     auto.init(false);
     waitForStart();
 
-    auto.approachConeStack(drive, 0, Auto.Alliance.Red);
+    auto.approachConeStack(drive, 0);
 
     drive.setClawState(Drive.ClawState.CLOSE);
     sleep(999999);
-
-    telemetry.update();
   }
 }
