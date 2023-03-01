@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.core.Drive;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "![AAPROTO]AutoRight", group = "Auto")
+@Autonomous(name = "AutoRight", group = "Auto")
 public class AutoRight extends LinearOpMode {
 
   @Override
@@ -76,7 +76,7 @@ public class AutoRight extends LinearOpMode {
 
     TrajectorySequence t9_3 = mecanum
             .trajectorySequenceBuilder(t8.end())
-            .strafeLeft(34)
+            .strafeLeft(33)
             .build();
 
     drive.setClawState(Drive.ClawState.CLOSE);

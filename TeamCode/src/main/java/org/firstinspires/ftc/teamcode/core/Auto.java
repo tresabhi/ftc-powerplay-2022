@@ -129,8 +129,8 @@ public class Auto {
       distance = distanceSensor.getDistance(DistanceUnit.MM);
 
       double offsetRaw = colorRight - colorLeft;
-      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 80));
-      offsetPower = offsetScaled * 0.12;
+      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 50));
+      offsetPower = offsetScaled * 0.11;
 
       double robotAngle = imu.getAngularOrientation(
               AxesReference.INTRINSIC,
@@ -138,8 +138,8 @@ public class Auto {
               AngleUnit.RADIANS
       ).firstAngle % (2 * Math.PI);
       double rotationOffsetRaw = targetAngle - robotAngle;
-      double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(8)));
-      rotationOffsetPower = rotationOffsetScaled * 0.2;
+      double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(6)));
+      rotationOffsetPower = rotationOffsetScaled * 0.18;
 
       double distanceDiffRaw = distance - TARGET_DISTANCE;
       double distanceDiff = Math.max(-1, Math.min(1, (distanceDiffRaw) / 25));
