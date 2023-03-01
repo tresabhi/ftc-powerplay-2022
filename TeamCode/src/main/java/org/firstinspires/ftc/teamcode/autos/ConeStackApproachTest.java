@@ -17,10 +17,10 @@ public class ConeStackApproachTest extends LinearOpMode {
 
     drive.setClawState(Drive.ClawState.OPEN);
     drive.setExtenderLevel(Drive.ExtenderLevel.STACK_5);
-    auto.init(false);
+    auto.init(drive, false);
     waitForStart();
 
-    auto.approachConeStack(drive, 0);
+    auto.approachConeStack(0);
 
     drive.setClawState(Drive.ClawState.CLOSE);
     sleep(999999);

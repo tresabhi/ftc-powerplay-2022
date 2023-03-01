@@ -98,10 +98,10 @@ public class DriveConstants {
      * Voltage Compensated kF: 12.979349754387
      */
 
-    public static double MAX_VEL = 45;
-    public static double MAX_ACCEL = 50;
-    public static double MAX_ANG_VEL = Math.toRadians(200);
-    public static double MAX_ANG_ACCEL = Math.toRadians(200);
+    public static double MAX_VEL = 38;
+    public static double MAX_ACCEL = 40;
+    public static double MAX_ANG_VEL = Math.toRadians(180);
+    public static double MAX_ANG_ACCEL = Math.toRadians(150);
 
 
     public static double encoderTicksToInches(double ticks) {

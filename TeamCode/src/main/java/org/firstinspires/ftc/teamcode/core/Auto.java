@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsAnalogOpticalDistanceSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -21,6 +22,7 @@ public class Auto {
   HardwareMap hardwareMap;
   Telemetry telemetry;
   OpenCvCamera camera;
+  Drive drive;
   SleeveDetector sleeveDetector;
   ColorRangeSensor colorSensorLeft;
   RevColorSensorV3 colorSensorRight;
@@ -32,6 +34,7 @@ public class Auto {
   public double distance = 0;
   double MIN_RUNTIME = 2000;
   double MAX_RUNTIME = 5000;
+  double TARGET_DISTANCE = 47;
 
   public Auto(HardwareMap hardwareMap, Telemetry telemetry) {
     this.hardwareMap = hardwareMap;
@@ -43,12 +46,18 @@ public class Auto {
     this.imu = hardwareMap.get(BNO055IMU.class, "imu");
   }
 
-  public void init() {
-    init(true);
+  public void init(Drive drive) {
+    init(drive, true);
   }
 
-  public void init(boolean initCam) {
+  public void init(Drive drive, boolean initCam) {
+    this.drive = drive;
+
     telemetry.addLine("autonomous API is initializing");
+
+    drive.rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+    drive.rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+    drive.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
     if (initCam) {
       telemetry.addLine("camera is initializing");
@@ -107,21 +116,21 @@ public class Auto {
     camera.stopStreaming();
   }
 
-  public void approachConeStack(Drive drive, double targetAngle) throws InterruptedException {
+  public void approachConeStack(double targetAngle) throws InterruptedException {
     double offsetPower = 1, rotationOffsetPower = 1, distancePower = 1;
     double time = 0;
     double startTime = System.currentTimeMillis();
 
-    while (((Math.abs(offsetPower) + Math.abs(rotationOffsetPower) + Math.abs(distancePower)) < 0.05 || (time) < MIN_RUNTIME) && (time) < MAX_RUNTIME) {
+    while ((distance <= TARGET_DISTANCE || (time) < MIN_RUNTIME) && (time) < MAX_RUNTIME) {
       time = System.currentTimeMillis() - startTime;
 
-      colorLeft = colorSensorLeft.getRawLightDetected();
+      colorLeft = colorSensorLeft.getRawLightDetected() / 2;
       colorRight = colorSensorRight.getRawLightDetected();
       distance = distanceSensor.getDistance(DistanceUnit.MM);
 
       double offsetRaw = colorRight - colorLeft;
-      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 150));
-      offsetPower = offsetScaled * 0.2;
+      double offsetScaled = Math.max(-1, Math.min(1, offsetRaw / 80));
+      offsetPower = offsetScaled * 0.12;
 
       double robotAngle = imu.getAngularOrientation(
               AxesReference.INTRINSIC,
@@ -129,12 +138,12 @@ public class Auto {
               AngleUnit.RADIANS
       ).firstAngle % (2 * Math.PI);
       double rotationOffsetRaw = targetAngle - robotAngle;
-      double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(4)));
+      double rotationOffsetScaled = Math.max(-1, Math.min(1, rotationOffsetRaw / Math.toRadians(8)));
       rotationOffsetPower = rotationOffsetScaled * 0.2;
 
-      double distanceDiffRaw = distance - 43;
-      double distanceDiff = Math.max(-1, Math.min(1, (distanceDiffRaw) / 10));
-      distancePower = distanceDiff * 0.15;
+      double distanceDiffRaw = distance - TARGET_DISTANCE;
+      double distanceDiff = Math.max(-1, Math.min(1, (distanceDiffRaw) / 25));
+      distancePower = distanceDiff * 0.12;
 
       drive.leftFront.setPower(offsetPower - rotationOffsetPower + distancePower);
       drive.leftRear.setPower(-offsetPower - rotationOffsetPower + distancePower);
@@ -142,6 +151,8 @@ public class Auto {
       drive.rightFront.setPower(-offsetPower + rotationOffsetPower + distancePower);
 
       telemetry.addData("distance", distance);
+      telemetry.addData("l", colorLeft);
+      telemetry.addData("r", colorRight);
       telemetry.update();
     }
 

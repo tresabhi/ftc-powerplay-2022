@@ -82,7 +82,7 @@ public class AutoLeft extends LinearOpMode {
 
     drive.setClawState(Drive.ClawState.CLOSE);
 
-    auto.init();
+    auto.init(drive);
     waitForStart();
     auto.readSleeve();
 

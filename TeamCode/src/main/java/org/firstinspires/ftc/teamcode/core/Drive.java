@@ -79,6 +79,11 @@ public class Drive {
     extender.setPower(EXTENDER_POWER);
   }
 
+  public void waitFor(double ms) {
+    double startTime = System.currentTimeMillis();
+    while (System.currentTimeMillis() - startTime < ms) {}
+  }
+
   public void updateExtender() {
     extenderState = Math.min(EXTENDER_MAX, Math.max(EXTENDER_MIN, extenderState));
     extender.setTargetPosition((int) (-extenderState));
@@ -112,6 +117,15 @@ public class Drive {
     } else if (level == ExtenderLevel.STACK_3) {
       setExtenderPosition(EXTENDER_STACK_3);
     }
+  }
+
+  public void depositCone() {
+    addExtenderPosition(-200);
+    waitFor(250);
+    setClawState(Drive.ClawState.OPEN);
+    waitFor(250);
+    addExtenderPosition(200);
+    waitFor(250);
   }
 
   public void setClawState(ClawState state) {
